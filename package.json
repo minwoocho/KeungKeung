@@ -1,0 +1,24 @@
+{
+  "name": "keungkeung_be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "htmx": "^0.0.2",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/pug": "^2.0.6",
+    "prettier": "3.0.3",
+    "typescript": "^5.2.2"
+  }
+}

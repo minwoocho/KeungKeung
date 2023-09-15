@@ -1,0 +1,8 @@
+doctype html
+html
+  head
+    script(src='https://unpkg.com/htmx.org@1.9.5')
+    title My HTMX Project
+  body
+    h1 Welcome to My HTMX Project
+    h1(hx-post="/test" hx-swap="outerHTML") pug btn
