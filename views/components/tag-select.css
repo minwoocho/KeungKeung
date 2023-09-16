@@ -1,0 +1,19 @@
+.tag-layout {
+  width: 100%;
+  height: 80px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  overflow-x: auto;
+}
+.tag-layout::-webkit-scrollbar {
+  display: none;
+}
+
+.tag-layout#main-tag-layout {
+  position: sticky;
+  top: 0;
+}
