@@ -1,5 +1,6 @@
-const express = require("express");
-const pug = require("pug");
+const express = require('express');
+const pug = require('pug');
+const fs = require('fs');
 const app = express();
 const port = 3000;
 const mysql = require("mysql"); // mysql 모듈을 불러옵니다.
@@ -13,11 +14,14 @@ const connection = mysql.createConnection({
   database: "keung"
 });
 
-app.set("view engine", "pug");
-app.use(express.static("public"));
+app.set('view engine', 'pug');
+app.use(express.static('public'));
+app.use(express.static('src'));
 
-app.get("/", (req, res) => {
-  res.render("index");
+app.get('/', (req, res) => {
+  const tagMockData = JSON.parse(fs.readFileSync('src/mock/tags.json', 'utf8'));
+  const reviewMockData = JSON.parse(fs.readFileSync('src/mock/reviews.json', 'utf8'));
+  res.render('index', { tags: tagMockData, reviews: reviewMockData });
 });
 
 app.post("/test", (req, res) => {

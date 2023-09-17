@@ -1,0 +1,8 @@
+include card.pug
+style 
+    include card-layout.css 
+
+mixin CardListLayout(cards)
+    #card-list-layout
+        each card in cards
+            +Card(card)

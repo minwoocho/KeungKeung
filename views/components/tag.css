@@ -1,0 +1,53 @@
+/* main화면 상단 태그 선택 부분 */
+.main-tag {
+  min-width: 80px;
+  height: 30px;
+  border-radius: 20px;
+  background-color: #f1f1f1;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-tag.selected {
+  background-color: #8c8c8c !important;
+}
+
+.selected p {
+  color: #ffffff !important;
+}
+
+.main-tag p {
+  font-family: 'Noto Sans Tamil UI';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #c9c4c4;
+}
+
+/* 각 card별 투표 기능 */
+.card-tag {
+  min-width: 80px;
+  height: 30px;
+  border-radius: 20px;
+  background-color: #f1f1f1;
+  margin-left: 5px;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-tag p {
+  font-family: 'Noto Sans Tamil UI';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #c9c4c4;
+}
+
+.card-tag.selected {
+  background-color: #ffb458 !important;
+}
