@@ -1,8 +1,2 @@
-include card.pug
-style 
-    include card-layout.css 
-
-mixin CardListLayout(cards)
-    #card-list-layout
-        each card in cards
-            +Card(card)
+each data in datas
+    .card(hx-get="/review/"+data.cardId hx-trigger="revealed" hx-swap="innerHTML")

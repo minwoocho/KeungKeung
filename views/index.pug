@@ -2,11 +2,11 @@ doctype html
 html
   head
     style
-      include index.css
+      include style
     script(src='https://unpkg.com/htmx.org@1.9.5')
     title 킁킁
-    include components/tag-select.pug
-    include components/card-layout.pug
+    //- include components/tag-select.pug
+    //- include components/card-layout.pug
     script 
       include ../src/functions/tag-select.js
   body
@@ -14,10 +14,6 @@ html
       #main-top(hx-get="/user" hx-trigger="load" hx-target="#main-hello" hx-swap="innerHTML")
         p#main-hello
         img(src='/assets/icon/pig-profile.png', style='width:50px')
-      +TagSelect(tags.data, 'main')
-      +CardListLayout(reviews.data)
+      .tag-layout(hx-get="/tagdetail" hx-trigger="load"  hx-swap="innerHTML")
+      #CardListLayout(hx-get="/review" hx-trigger="load" hx-swap="innerHTML")
       
-    //- h1 Welcome to My HTMX Project
-    //- button(hx-post="/test" hx-swap="outerHTML") test btn
-    //- br
-    //- button(hx-post="/dbtest" hx-swap="outerHTML") dbtest btn

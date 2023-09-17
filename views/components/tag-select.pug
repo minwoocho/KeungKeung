@@ -1,16 +1,2 @@
-include tag.pug
-    
-style
-    include tag-select.css 
-
-mixin TagSelect(tags, type)
-    if type == 'main'
-        .tag-layout(id="main-tag-layout")
-            each tag in tags
-                +Tag(tag, false, type)
-    else 
-        .tag-layout 
-            each tag in tags
-                +Tag(tag, false, type)
-    
-            
+each tag in tags
+    include tag
