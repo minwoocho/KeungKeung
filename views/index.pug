@@ -2,11 +2,11 @@ doctype html
 html
   head
     style
-      include index.scss
+      include style
     script(src='https://unpkg.com/htmx.org@1.9.5')
     title 킁킁
-    include components/tag-select.pug
-    include components/card-layout.pug
+    //- include components/tag-select.pug
+    //- include components/card-layout.pug
     script 
       include ../src/functions/tag-select.js
   body
@@ -15,6 +15,7 @@ html
         p#main-hello
         #main-top-add 
           img(src='/assets/icon/add.png', style='width:1.65rem;height:1.65rem')
-          p 가게 추가하기
-      +TagSelect(tags.data, 'main')
-      +CardListLayout(reviews.data)
+          p(htmx-get="/add-review" hx-trigger="click") 가게 추가하기
+      .tag-layout(hx-get="/tagdetail" hx-trigger="load"  hx-swap="innerHTML")
+      #card-list-layout(hx-get="/review" hx-trigger="load" hx-swap="innerHTML")
+      

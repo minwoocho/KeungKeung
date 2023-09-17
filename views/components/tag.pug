@@ -1,11 +1,2 @@
-style
-    include tag.scss
-
-mixin Tag(tag, selected, type)
-    if type === 'main'
-        .main-tag(id=`main_tag_${tag.tagId}`)
-            p ##{tag.tagName}
-    else if type === 'card'
-        .card-tag(id=`card_tag_${tag.tagId}`)
-            p ##{tag.tagName}
-        
+.main-tag(id=tag.type+`_tag_`+tag.tagId)
+    p ##{tag.tagName}

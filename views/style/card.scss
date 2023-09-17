@@ -1,0 +1,85 @@
+.card {
+  width: 100%;
+  height: auto;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+/* 카드 헤더 영역 */
+.card-header {
+  width: 95%;
+  height: 10vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  margin: 5px 10px;
+}
+.card-profile {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.card-profile p {
+  margin-left: 5px;
+  font-family: 'Noto Looped Thai';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 22px;
+  color: #696969;
+  margin-left: 10px;
+}
+
+.card-store {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.card-store p {
+  font-family: 'Noto Looped Thai';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 22px;
+  color: #696969;
+}
+
+/* 본문 영역 */
+.card-review {
+  width: 95%;
+  font-family: 'Noto Looped Thai';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.85rem;
+  line-height: 2.2rem;
+  color: #696969;
+}
+
+.card-review p {
+  margin: 0;
+}
+
+/* 댓글 영역 */
+.card-reply {
+  width: 95%;
+  margin-right: 10px;
+  display: flex;
+  justify-content: flex-end;
+  font-family: 'Noto Looped Thai';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.85rem;
+  line-height: 1.85rem;
+  color: #a0a0a0;
+}
