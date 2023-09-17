@@ -18,10 +18,17 @@ app.set('view engine', 'pug');
 app.use(express.static('public'));
 app.use(express.static('src'));
 
+const mockUserId = '00000';
+
 app.get('/', (req, res) => {
   const tagMockData = JSON.parse(fs.readFileSync('src/mock/tags.json', 'utf8'));
   const reviewMockData = JSON.parse(fs.readFileSync('src/mock/reviews.json', 'utf8'));
   res.render('index', { tags: tagMockData, reviews: reviewMockData });
+});
+
+app.get('/user', (req, res) => {
+  // const markup = pug.render('p#main-hello  이지민님! 어떤 식당을 찾으시나요?')
+  // res.send(markup);
 });
 
 app.post("/test", (req, res) => {

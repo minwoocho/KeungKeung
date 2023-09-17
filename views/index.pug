@@ -11,8 +11,8 @@ html
       include ../src/functions/tag-select.js
   body
     #base-layout
-      #main-top
-        p#main-hello 이지민님! 어떤 식당을 찾으시나요?
+      #main-top(hx-get="/user" hx-trigger="load" hx-target="#main-hello" hx-swap="innerHTML")
+        p#main-hello
         img(src='/assets/icon/pig-profile.png', style='width:50px')
       +TagSelect(tags.data, 'main')
       +CardListLayout(reviews.data)
