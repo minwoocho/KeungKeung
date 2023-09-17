@@ -2,6 +2,16 @@ const express = require("express");
 const pug = require("pug");
 const app = express();
 const port = 3000;
+const mysql = require("mysql"); // mysql 모듈을 불러옵니다.
+
+// 커넥션을 정의합니다.
+// RDS Console 에서 본인이 설정한 값을 입력해주세요.
+const connection = mysql.createConnection({
+  host: "keung-rds.colgpa78bwcs.ap-northeast-2.rds.amazonaws.com",
+  user: "admin",
+  password: "!Dkagh00",
+  database: "keung"
+});
 
 app.set("view engine", "pug");
 app.use(express.static("public"));
@@ -12,8 +22,25 @@ app.get("/", (req, res) => {
 
 app.post("/test", (req, res) => {
   let template = pug.compileFile("views/pages/test.pug");
-  console.log(template());
   res.send(template());
+});
+
+app.post("/dbtest", (req, res) => {
+  let template = pug.compileFile("views/pages/dbtest.pug");
+  let time;
+
+  connection.connect(function(err) {  
+    try{
+      // 접속시 쿼리를 보냅니다.
+      connection.query("SELECT NOW() AS time FROM DUAL", function(err, rows, fields) {
+        time = rows[0].time;
+        console.log(rows[0].time);
+        res.send(template({serverTime: time}));
+      });
+    }catch (e){
+      console.log(e);
+    }
+  });
 });
 
 app.listen(port, () => {
