@@ -12,7 +12,7 @@
 /* 카드 헤더 영역 */
 .card-header {
   width: 95%;
-  height: 60px;
+  height: 10vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -32,9 +32,10 @@
   font-family: 'Noto Looped Thai';
   font-style: normal;
   font-weight: 400;
-  font-size: 18px;
+  font-size: 2rem;
   line-height: 22px;
   color: #696969;
+  margin-left: 10px;
 }
 
 .card-store {
@@ -49,7 +50,7 @@
   font-family: 'Noto Looped Thai';
   font-style: normal;
   font-weight: 400;
-  font-size: 18px;
+  font-size: 2rem;
   line-height: 22px;
   color: #696969;
 }
@@ -60,8 +61,8 @@
   font-family: 'Noto Looped Thai';
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 19px;
+  font-size: 1.85rem;
+  line-height: 2.2rem;
   color: #696969;
 }
 
@@ -78,7 +79,7 @@
   font-family: 'Noto Looped Thai';
   font-style: normal;
   font-weight: 400;
-  font-size: 12px;
-  line-height: 19px;
+  font-size: 1.85rem;
+  line-height: 1.85rem;
   color: #a0a0a0;
 }
