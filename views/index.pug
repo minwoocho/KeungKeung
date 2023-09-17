@@ -2,7 +2,7 @@ doctype html
 html
   head
     style
-      include style
+      include index.scss
     script(src='https://unpkg.com/htmx.org@1.9.5')
     title 킁킁
     //- include components/tag-select.pug
@@ -13,7 +13,9 @@ html
     #base-layout
       #main-top(hx-get="/user" hx-trigger="load" hx-target="#main-hello" hx-swap="innerHTML")
         p#main-hello
-        img(src='/assets/icon/pig-profile.png', style='width:50px')
+        #main-top-add 
+          img(src='/assets/icon/add.png', style='width:1.65rem;height:1.65rem')
+          p 가게 추가하기
       .tag-layout(hx-get="/tagdetail" hx-trigger="load"  hx-swap="innerHTML")
       #CardListLayout(hx-get="/review" hx-trigger="load" hx-swap="innerHTML")
       
