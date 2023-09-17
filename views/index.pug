@@ -2,7 +2,7 @@ doctype html
 html
   head
     style
-      include index.css
+      include index.scss
     script(src='https://unpkg.com/htmx.org@1.9.5')
     title 킁킁
     include components/tag-select.pug
@@ -11,11 +11,15 @@ html
       include ../src/functions/tag-select.js
   body
     #base-layout
-      #main-top
-        p#main-hello 이지민님! 어떤 식당을 찾으시나요?
+      #main-top(hx-get="/user" hx-trigger="load" hx-target="#main-hello" hx-swap="innerHTML")
+        p#main-hello
         #main-top-add 
           img(src='/assets/icon/add.png', style='width:1.65rem;height:1.65rem')
           p 가게 추가하기
       +TagSelect(tags.data, 'main')
       +CardListLayout(reviews.data)
       
+    //- h1 Welcome to My HTMX Project
+    //- button(hx-post="/test" hx-swap="outerHTML") test btn
+    //- br
+    //- button(hx-post="/dbtest" hx-swap="outerHTML") dbtest btn

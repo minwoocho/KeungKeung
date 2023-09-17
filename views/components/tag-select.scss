@@ -8,12 +8,11 @@
   justify-content: flex-start;
 
   overflow-x: auto;
+  #main-tag-layout {
+    position: sticky;
+    top: 0;
+  }
 }
 .tag-layout::-webkit-scrollbar {
   display: none;
-}
-
-.tag-layout#main-tag-layout {
-  position: sticky;
-  top: 0;
 }
