@@ -1,8 +1,19 @@
 doctype html
 html
   head
+    style
+      include index.css
     script(src='https://unpkg.com/htmx.org@1.9.5')
-    title My HTMX Project
+    title 킁킁
+    include components/tag-select.pug
+    include components/card-layout.pug
+    script 
+      include ../src/functions/tag-select.js
   body
-    h1 Welcome to My HTMX Project
-    h1(hx-post="/test" hx-swap="outerHTML") pug btn
+    #base-layout
+      #main-top
+        p#main-hello 이지민님! 어떤 식당을 찾으시나요?
+        img(src='/assets/icon/pig-profile.png', style='width:50px')
+      +TagSelect(tags.data, 'main')
+      +CardListLayout(reviews.data)
+      

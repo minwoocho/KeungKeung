@@ -1,0 +1,20 @@
+include tag-select.pug
+style
+    include card.css
+
+mixin Card(card)
+    .card 
+        .card-header 
+            .card-profile 
+                img(src='/assets/icon/pig-profile.png', style='width:36px')
+                p #{card.userName}
+            .card-store
+                p #{card.storeName}
+        img(src=card.photo, style='width:100%')
+        +TagSelect(card.tags, 'card')
+        .card-review 
+            p #{card.review}
+        .card-reply 
+            p 댓글 15개
+        
+

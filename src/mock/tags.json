@@ -1,0 +1,10 @@
+{
+  "data": [
+    { "tagId": 1, "tagName": "회식" },
+    { "tagId": 2, "tagName": "점심" },
+    { "tagId": 3, "tagName": "법카" },
+    { "tagId": 4, "tagName": "혼밥" },
+    { "tagId": 5, "tagName": "소개팅" },
+    { "tagId": 6, "tagName": "꽁밥" }
+  ]
+}

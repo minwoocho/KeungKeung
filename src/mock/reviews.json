@@ -1,0 +1,48 @@
+{
+  "data": [
+    {
+      "reviewId": 1,
+      "userName": "지지",
+      "review": "곱창을 좋아하시는 분이라면, 여기 꼭 가보세요! 군침이 싹 도누 개 맛있삼 레알 와 눈물 좔좔 쏘주랑 한입먹으면 천국 필요없다. 하느님도 잊게되는 맛",
+      "photo": "/assets/photos/mock-picture.png",
+      "tags": [
+        { "tagId": 1, "tagName": "회식" },
+        { "tagId": 2, "tagName": "술" }
+      ],
+      "storeName": "곱창이야기"
+    },
+    {
+      "reviewId": 1,
+      "userName": "지지",
+      "review": "곱창을 좋아하시는 분이라면, 여기 꼭 가보세요! 군침이 싹 도누 개 맛있삼 레알 와 눈물 좔좔 쏘주랑 한입먹으면 천국 필요없다. 하느님도 잊게되는 맛",
+      "photo": "/assets/photos/mock-picture.png",
+      "tags": [
+        { "tagId": 1, "tagName": "회식" },
+        { "tagId": 2, "tagName": "술" }
+      ],
+      "storeName": "곱창이야기"
+    },
+    {
+      "reviewId": 1,
+      "userName": "지지",
+      "review": "곱창을 좋아하시는 분이라면, 여기 꼭 가보세요! 군침이 싹 도누 개 맛있삼 레알 와 눈물 좔좔 쏘주랑 한입먹으면 천국 필요없다. 하느님도 잊게되는 맛",
+      "photo": "/assets/photos/mock-picture.png",
+      "tags": [
+        { "tagId": 1, "tagName": "회식" },
+        { "tagId": 2, "tagName": "술" }
+      ],
+      "storeName": "곱창이야기"
+    },
+    {
+      "reviewId": 1,
+      "userName": "지지",
+      "review": "곱창을 좋아하시는 분이라면, 여기 꼭 가보세요! 군침이 싹 도누 개 맛있삼 레알 와 눈물 좔좔 쏘주랑 한입먹으면 천국 필요없다. 하느님도 잊게되는 맛",
+      "photo": "/assets/photos/mock-picture.png",
+      "tags": [
+        { "tagId": 1, "tagName": "회식" },
+        { "tagId": 2, "tagName": "술" }
+      ],
+      "storeName": "곱창이야기"
+    }
+  ]
+}
