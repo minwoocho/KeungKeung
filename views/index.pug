@@ -15,7 +15,7 @@ html
         p#main-hello
         #main-top-add 
           img(src='/assets/icon/add.png', style='width:1.65rem;height:1.65rem')
-          p 가게 추가하기
+          p(htmx-get="/add-review" hx-trigger="click") 가게 추가하기
       .tag-layout(hx-get="/tagdetail" hx-trigger="load"  hx-swap="innerHTML")
       #card-list-layout(hx-get="/review" hx-trigger="load" hx-swap="innerHTML")
       

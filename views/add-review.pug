@@ -1,12 +1,12 @@
 html
   head
     style
-      include ../index.scss
+      include style/index.scss
       include add-review.scss
     script(src='https://unpkg.com/htmx.org@1.9.5')
-    script 
-        include ../../src/functions/add-review.js
-    include ../components/tag-select.pug
+    //- script 
+    //-     include ../src/functions/add-review.js
+    //- include components/tag-select.pug
     title 킁킁
   body
     #base-layout
@@ -23,7 +23,7 @@ html
                 input.form-input-text(type="text", name="url", placeholder="네이버지도 url을 입력해주세요") 
                 input.form-input-text(type="text", name='tags', hidden) 
                 .form-input-text
-                +TagSelect(tags.data, 'card')
+                //- +TagSelect(tags.data, 'card')
                 textarea.form-input.textarea(name='review', placeholder="리뷰를 입력해주세요")
             .save-button-section 
                 button.save-button 저장

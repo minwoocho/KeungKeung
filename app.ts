@@ -21,21 +21,6 @@ app.use(express.static('src'));
 const mockUserId = '00003';
 
 app.get('/', (req, res) => {
-  // connection.connect(function() {  
-  //   try{
-  //     connection.query(
-  //       "SELECT TAG_ID as tagId, TAG_NAME as tagName FROM TB_TAG_MASTER", function(err, rows: any[], fields) {
-  //         const reviewMockData = JSON.parse(fs.readFileSync('src/mock/reviews.json', 'utf8'));
-  //         res.render('index', { tags: rows});
-  //     });
-  //   }catch (e){
-  //     console.log(e);
-  //   }
-  // });
-  // const tagMockData = JSON.parse(fs.readFileSync('src/mock/tags.json', 'utf8'));
-  // const reviewMockData = JSON.parse(fs.readFileSync('src/mock/reviews.json', 'utf8'));
-  // res.render('index', { tags: tagMockData, reviews: reviewMockData });
-  // console.log(tagMockData.data)
   res.render('index')
 });
 
@@ -57,10 +42,7 @@ app.get('/user', (req, res) => {
 });
 
 app.get('/add-review', (req, res) => {
-  let template = pug.compileFile('views/pages/add-review.pug');
-  const tagMockData = JSON.parse(fs.readFileSync('src/mock/tags.json', 'utf8'));
-
-  res.send(template({ tags: tagMockData }));
+  res.render('add-review')
 });
 
 app.get('/review', (req, res) => {
