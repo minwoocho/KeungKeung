@@ -1,5 +1,5 @@
 {
   "watch": ["src/*"],
-  "ext": ".tsx",
+  "ext": ".ts",
   "exec": "tsc && ts-node app.js"
 }

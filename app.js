@@ -20,6 +20,13 @@ app.post('/test', (req, res) => {
   res.send(template());
 });
 
+app.get('/add-review', (req, res) => {
+  let template = pug.compileFile('views/pages/add-review.pug');
+  const tagMockData = JSON.parse(fs.readFileSync('src/mock/tags.json', 'utf8'));
+
+  res.send(template({ tags: tagMockData }));
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

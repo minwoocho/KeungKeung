@@ -3,14 +3,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: black;
+  /* background-color: black; */
 }
 
 #base-layout {
-  width: 100%;
-  height: 100%;
-  max-width: 500px;
-  max-height: 1000px;
   background-color: #fff9f2;
   display: flex;
   flex-direction: column;
@@ -20,28 +16,67 @@ body {
   overflow-y: scroll;
 }
 
+/* 가로 넓이 1000px이상되는 웹 화면 기준 */
+@media (min-width: 1000px) {
+  #base-layout {
+    width: 100%;
+    height: 100%;
+    max-width: 500px;
+    max-height: 1000px;
+  }
+}
+
+/* 모바일 화면 | 창크기 줄인 웹 화면 기준 */
+@media (max-width: 1000px) {
+  body {
+    margin: 0;
+  }
+  #base-layout {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 #base-layout::-webkit-scrollbar {
   display: none;
 }
 
+/* 화면 상단 영역 */
 #main-top {
-  width: 100%;
-  height: 100px;
+  width: 90%;
+  height: 15vw;
   display: flex;
-  width: 80%;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
+/* 화면 상단 인삿말 영역 */
 #main-hello {
   font-family: 'Noto Looped Thai';
   font-style: normal;
   font-weight: 400;
-  font-size: 18px;
+  font-size: 2rem;
   line-height: 22px;
   display: flex;
   align-items: center;
 
   color: #696969;
+}
+
+/* 가게 추가 버튼 */
+#main-top-add {
+  font-family: 'Noto Looped Thai';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.65rem;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+
+  color: #696969;
+}
+
+#main-top-add p {
+  margin-left: 10px;
 }

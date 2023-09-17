@@ -13,7 +13,9 @@ html
     #base-layout
       #main-top
         p#main-hello 이지민님! 어떤 식당을 찾으시나요?
-        img(src='/assets/icon/pig-profile.png', style='width:50px')
+        #main-top-add 
+          img(src='/assets/icon/add.png', style='width:1.65rem;height:1.65rem')
+          p 가게 추가하기
       +TagSelect(tags.data, 'main')
       +CardListLayout(reviews.data)
       
