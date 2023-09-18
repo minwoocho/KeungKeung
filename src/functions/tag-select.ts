@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // }
 
   const addReviewButton = document.getElementById("main-top-add");
-  addReviewButton?.addEventListener("click", handleOnClickAddReview);
+  // addReviewButton?.addEventListener("click", handleOnClickAddReview);
 });
 
 const headers = {

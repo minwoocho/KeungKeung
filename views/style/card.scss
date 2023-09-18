@@ -1,4 +1,4 @@
-.card {
+.card-container {
   width: 100%;
   height: auto;
   background-color: white;
@@ -29,7 +29,7 @@
 
 .card-profile p {
   margin-left: 5px;
-  font-family: 'Noto Looped Thai';
+  font-family: "Noto Looped Thai";
   font-style: normal;
   font-weight: 400;
   font-size: 2rem;
@@ -47,7 +47,7 @@
 }
 
 .card-store p {
-  font-family: 'Noto Looped Thai';
+  font-family: "Noto Looped Thai";
   font-style: normal;
   font-weight: 400;
   font-size: 2rem;
@@ -58,7 +58,7 @@
 /* 본문 영역 */
 .card-review {
   width: 95%;
-  font-family: 'Noto Looped Thai';
+  font-family: "Noto Looped Thai";
   font-style: normal;
   font-weight: 400;
   font-size: 1.85rem;
@@ -76,7 +76,7 @@
   margin-right: 10px;
   display: flex;
   justify-content: flex-end;
-  font-family: 'Noto Looped Thai';
+  font-family: "Noto Looped Thai";
   font-style: normal;
   font-weight: 400;
   font-size: 1.85rem;
