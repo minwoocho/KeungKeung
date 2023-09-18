@@ -18,6 +18,10 @@ document.addEventListener("DOMContentLoaded", function () {
   addReviewButton?.addEventListener("click", handleOnClickAddReview);
 });
 
+const headers = {
+  "Content-Type": "application/json",
+};
+
 /**
  * 공통으로 뺄 예정
  * @param id scrollable element id
@@ -72,8 +76,43 @@ const handleTagLayoutScroll = (id: string) => {
  * @returns: None
  * @description : handle when the tag is clicked
  */
-const handleOnClickTag = (e: HTMLDivElement) => {
-  // const currentTag = e as HTMLDivElement;
+const handleOnClickMainTag = (e: HTMLDivElement) => {
+  // window.scrollTo(0, 0);
+  // TODO: 지지님 이 위치에 스크롤 맨 위로 갈 수 있는 함수 하나만 넣어주세요....
+  if (e) {
+    e.className =
+      e.className.length > 8
+        ? e.className.slice(0, 8)
+        : e.className + " selected";
+  }
+};
+
+/**
+ * @param e MouseEvent
+ * @returns: None
+ * @description : handle when the tag is clicked
+ */
+const handleOnClickCardTag = (e: HTMLDivElement) => {
+  const body: BodyInit = JSON.stringify({
+    reviewId: e.parentElement?.parentElement?.id,
+    tagId: e.id,
+  });
+  if (e.className.length <= 8) {
+    //like
+    fetch("/like", {
+      method: "PUT",
+      headers: headers,
+      body: body,
+    });
+  } else {
+    // unlike
+    fetch("/unlike", {
+      method: "DELETE",
+      headers: headers,
+      body: body,
+    });
+  }
+
   if (e) {
     e.className =
       e.className.length > 8

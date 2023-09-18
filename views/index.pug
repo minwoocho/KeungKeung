@@ -9,11 +9,11 @@ html
       include style
   body
     #base-layout
-      #main-top(hx-get="/user" hx-trigger="load" hx-target="#main-hello" hx-swap="innerHTML")
-        p#main-hello
+      #main-top
+        p#main-hello(hx-get="/user" hx-trigger="load")
         #main-top-add 
           img(src='/assets/icon/add.png', style='width:1.65rem;height:1.65rem')
           p(htmx-get="/add-review" hx-boost="true") 가게 추가하기
-      .tag-layout#main-tag-layout(hx-get="/tagdetail" hx-trigger="load" hx-swap="innerHTML")
-      #card-list-layout(hx-get="/reviews" hx-trigger="load" hx-swap="innerHTML")
+      .tag-layout#main-tag-layout(hx-get="/tagdetail" hx-trigger="load")
+      #card-list-layout(hx-get="/reviews" hx-trigger="load")
       
