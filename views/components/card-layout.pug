@@ -1,2 +1,17 @@
 each data in datas
-    .card(hx-get="/review/"+data.cardId hx-trigger="revealed" hx-swap="innerHTML")
+    .card(hx-get="/review/"+data.cardId hx-trigger="intersect" hx-swap="outerHTML")
+        .card-header
+            .card-profile 
+                img(src='/assets/icon/pig-profile.png', style='width:60px')
+                p userName
+            .card-store
+                p storeName
+        //- img(src='/assets/photos/mock-picture.png', style='width:100%')
+        //- +TagSelect(tags, 'card')
+        .tag-layout#main-tag-layout
+            .card-tag(id=`_tag_`)
+                p #123
+        .card-review 
+            p review
+        .card-reply 
+            p 댓글 15개

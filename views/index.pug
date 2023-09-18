@@ -1,21 +1,19 @@
 doctype html
 html
   head
+    title 킁킁
+    script(src='https://unpkg.com/htmx.org@1.9.5')
+    script
+      include ../src/functions/tag-select.js
     style
       include style
-    script(src='https://unpkg.com/htmx.org@1.9.5')
-    title 킁킁
-    //- include components/tag-select.pug
-    //- include components/card-layout.pug
-    script 
-      include ../src/functions/tag-select.js
   body
     #base-layout
       #main-top(hx-get="/user" hx-trigger="load" hx-target="#main-hello" hx-swap="innerHTML")
         p#main-hello
         #main-top-add 
           img(src='/assets/icon/add.png', style='width:1.65rem;height:1.65rem')
-          p(htmx-get="/add-review" hx-trigger="click") 가게 추가하기
-      .tag-layout(hx-get="/tagdetail" hx-trigger="load"  hx-swap="innerHTML")
-      #card-list-layout(hx-get="/review" hx-trigger="load" hx-swap="innerHTML")
+          p(htmx-get="/add-review" hx-boost="true") 가게 추가하기
+      .tag-layout#main-tag-layout(hx-get="/tagdetail" hx-trigger="load" hx-swap="innerHTML")
+      #card-list-layout(hx-get="/reviews" hx-trigger="load" hx-swap="innerHTML")
       
