@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app">  
+  <select id="user">
+    SELECT NAME
+    FROM TB_USER_MASTER
+    WHERE USER_ID = #{userId}
+  </select>
+  <select id="reviews">
+    SELECT REVIEW_ID AS cardId
+    FROM TB_REVIEW_MASTER
+    ORDER BY REVIEW_ID DESC
+  </select>
+  <select id="review/id">
+    SELECT TRM.REVIEW_ID as reviewId
+          ,TRM.REVIEW_CONTENT as review
+          ,TSM.STORE_NAME as storeName
+          ,'/assets/photos/mock-picture.png' as photo
+          ,TUM.NAME as userName
+      FROM TB_REVIEW_MASTER TRM 
+      LEFT OUTER JOIN TB_STORE_MASTER TSM ON TRM.STORE_ID  = TSM.STORE_ID  
+      LEFT OUTER JOIN TB_IMAGE_MASTER TIM  ON TRM.REVIEW_ID  = TIM.REVIEW_ID
+      LEFT OUTER JOIN TB_USER_MASTER TUM ON TRM.USER_ID  = TUM.USER_ID
+    WHERE 1=1
+      AND TRM.REVIEW_ID = #{id}
+  </select>
+  <select id="review/tags/id">
+    SELECT TRT.TAG_ID as tagId
+          ,TTM.TAG_NAME as tagName
+          ,'card' as type 
+      FROM TB_REVIEW_TAG TRT
+      LEFT OUTER JOIN TB_TAG_MASTER TTM ON TRT.TAG_ID = TTM.TAG_ID 
+     WHERE TRT.REVIEW_ID = #{id}
+  </select>
+  <select id="tagdetail">
+    SELECT TAG_ID as tagId
+          ,TAG_NAME as tagName
+          ,'main' as type
+      FROM TB_TAG_MASTER
+  </select>
+</mapper>
