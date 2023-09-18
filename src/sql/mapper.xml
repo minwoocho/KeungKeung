@@ -6,11 +6,23 @@
     FROM TB_USER_MASTER
     WHERE USER_ID = #{userId}
   </select>
+
   <select id="reviews">
     SELECT REVIEW_ID AS cardId
     FROM TB_REVIEW_MASTER
     ORDER BY REVIEW_ID DESC
   </select>
+
+  <select id="reviews/tagId">
+    SELECT DISTINCT REVIEW_ID AS cardId
+    FROM TB_REVIEW_TAG
+    WHERE TAG_ID IN 
+    <foreach collection="tagIds" item="tagId" separator="," open="(" close=")">
+      #{tagId}
+    </foreach>
+    ORDER BY REVIEW_ID DESC
+  </select>
+
   <select id="review/id">
     SELECT TRM.REVIEW_ID as reviewId
           ,TRM.REVIEW_CONTENT as review
@@ -24,18 +36,37 @@
     WHERE 1=1
       AND TRM.REVIEW_ID = #{id}
   </select>
+
   <select id="review/tags/id">
     SELECT TRT.TAG_ID as tagId
           ,TTM.TAG_NAME as tagName
+          ,NVL((SELECT 'selected'
+              FROM TB_USER_REVIEW_TAG TURT 
+             WHERE TRT.REVIEW_ID = TURT.REVIEW_ID
+               AND TTM.TAG_ID = TURT.TAG_ID
+               AND TURT.USER_ID = #{userId} ), '') AS likes
           ,'card' as type 
       FROM TB_REVIEW_TAG TRT
       LEFT OUTER JOIN TB_TAG_MASTER TTM ON TRT.TAG_ID = TTM.TAG_ID 
      WHERE TRT.REVIEW_ID = #{id}
   </select>
+
   <select id="tagdetail">
     SELECT TAG_ID as tagId
           ,TAG_NAME as tagName
           ,'main' as type
       FROM TB_TAG_MASTER
   </select>
+
+  <insert id="like">
+    INSERT INTO TB_USER_REVIEW_TAG(REVIEW_ID,USER_ID,TAG_ID)
+    VALUES (#{reviewId},#{userId},#{tagId})
+  </insert>
+
+  <delete id="unlike">
+    DELETE FROM TB_USER_REVIEW_TAG
+     WHERE REVIEW_ID = #{reviewId}
+       AND USER_ID = #{userId}
+       AND TAG_ID = #{tagId}
+  </delete>
 </mapper>

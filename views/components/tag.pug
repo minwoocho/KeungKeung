@@ -1,2 +1,7 @@
-div(class=tag.type+"-tag" id=tag.type+`_tag_`+tag.tagId onclick="handleOnClickTag(this);")
-    p ##{tag.tagName}
+if tag.type == "main"
+    div.main-tag(id=tag.tagId onclick="handleOnClickMainTag(this);"
+    hx-get="/reviews/"+tag.tagId hx-trigger="click" hx-target="#card-list-layout")
+            p ##{tag.tagName}
+else
+    div(class=tag.type+"-tag "+tag.likes id=tag.tagId onclick="handleOnClickCardTag(this);")
+        p ##{tag.tagName}
