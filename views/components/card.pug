@@ -1,5 +1,3 @@
-
-//- mixin Card(id)  
 .card
     .card-header 
         .card-profile 
@@ -8,10 +6,7 @@
         .card-store
             p #{data.storeName}
     img(src=data.photo, style='width:100%')
-    //- +TagSelect(tags, 'card')
-    .tag-layout#main-tag-layout
-        .main-tag(id=`_tag_`)
-            p #123
+    .tag-layout(hx-get="/review/tags/"+data.reviewId hx-trigger="load" hx-swap="innerHTML")
     .card-review 
         p #{data.review}
     .card-reply 
