@@ -1,31 +1,40 @@
-/* main화면 상단 태그 선택 부분 */
-.main-tag {
-  min-width: 180px;
-  height: 70px;
-  border-radius: 50px;
-  background-color: #f1f1f1;
-  margin-left: 20px;
-  margin-right: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.main-tag.selected {
-  background-color: #8c8c8c !important;
-}
-
 .selected p {
   color: #ffffff !important;
 }
+/* main화면 상단 태그 선택 부분 */
+.tag-layout.main {
+  .main-tag {
+    min-width: 180px;
+    height: 70px;
+    border-radius: 50px;
+    background-color: #f1f1f1;
+    margin-left: 20px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-.main-tag p {
-  font-family: 'Noto Sans Tamil UI';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.85rem;
-  color: #a2a2a2;
+    > p {
+      font-family: "Noto Sans Tamil UI";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 1.85rem;
+      color: #a2a2a2;
+    }
+
+    &.selected {
+      background-color: #8c8c8c !important;
+    }
+  }
 }
+
+// .main-tag p {
+//   font-family: "Noto Sans Tamil UI";
+//   font-style: normal;
+//   font-weight: 400;
+//   font-size: 1.85rem;
+//   color: #a2a2a2;
+// }
 
 /* 각 card별 투표 기능 */
 .card-tag {
@@ -41,7 +50,7 @@
 }
 
 .card-tag p {
-  font-family: 'Noto Sans Tamil UI';
+  font-family: "Noto Sans Tamil UI";
   font-style: normal;
   font-weight: 400;
   font-size: 1.65rem;

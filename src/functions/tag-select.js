@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //   const result = tag.addEventListener('click', handleOnClickTag);
     // }
     const addReviewButton = document.getElementById("main-top-add");
-    addReviewButton === null || addReviewButton === void 0 ? void 0 : addReviewButton.addEventListener("click", handleOnClickAddReview);
+    // addReviewButton?.addEventListener("click", handleOnClickAddReview);
 });
 const headers = {
     "Content-Type": "application/json",
