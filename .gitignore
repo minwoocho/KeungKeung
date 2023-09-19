@@ -1,4 +1,4 @@
 node_modules
 .vscode
 
-*.js
+dist/**/*.js
