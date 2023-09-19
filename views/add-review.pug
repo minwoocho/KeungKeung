@@ -1,17 +1,12 @@
+doctype html
 html
   head
-    style
-      include style/index.scss
-      include add-review.scss
-    script(src='https://unpkg.com/htmx.org@1.9.5')
-    //- script 
-    //-     include ../src/functions/add-review.js
-    //- include components/tag-select.pug
+    include import
     title 킁킁
   body
     #base-layout
         #main-top
-            #main-hello
+            a#main-hello(href="/" hx-boost="true")
                 img(src='assets/icon/back.png', style="width:2rem;height:2rem;margin-right:10px")
                 p 새로운 가게 등록하기
         #add-review-layout
@@ -23,7 +18,7 @@ html
                 input.form-input-text(type="text", name="url", placeholder="네이버지도 url을 입력해주세요") 
                 input.form-input-text(type="text", name='tags', hidden) 
                 .form-input-text
-                //- +TagSelect(tags.data, 'card')
+                .tag-layout.card(hx-get="/tagdetail" hx-trigger="load")
                 textarea.form-input.textarea(name='review', placeholder="리뷰를 입력해주세요")
             .save-button-section 
                 button.save-button 저장

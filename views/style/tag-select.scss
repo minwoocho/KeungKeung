@@ -8,7 +8,7 @@
   justify-content: flex-start;
 
   overflow-x: auto;
-  &#main-tag-layout {
+  &.main {
     position: sticky;
     top: 0;
   }
