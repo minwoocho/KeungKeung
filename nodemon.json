@@ -1,5 +1,5 @@
 {
   "watch": ["./"],
-  "ext": ".tsx, .ts",
+  "ext": ".tsx, .ts, .xml",
   "exec": "tsc && ts-node app.ts"
 }

@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
   //   const result = tag.addEventListener('click', handleOnClickTag);
   // }
 
-  const addReviewButton = document.getElementById("main-top-add");
+  // const addReviewButton = document.getElementById("main-top-add");
   // addReviewButton?.addEventListener("click", handleOnClickAddReview);
 });
 
