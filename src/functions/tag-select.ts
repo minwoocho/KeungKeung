@@ -1,10 +1,10 @@
 const tagIds = new Set();
 
-document.addEventListener("DOMContentLoaded", function () {
-  handleTagLayoutScroll("main-tag-layout");
-  handleTagLayoutScroll("base-layout");
+document.addEventListener('DOMContentLoaded', function () {
+  handleTagLayoutScroll('main-tag-layout');
+  handleTagLayoutScroll('base-layout');
 
-  const tags = document.getElementsByClassName("main-tag");
+  const tags = document.getElementsByClassName('main-tag');
   // const cardTags = this.getElementsByClassName('card-tag');
 
   // for (const tag of tags) {
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 const headers = {
-  "Content-Type": "application/json",
+  'Content-Type': 'application/json',
 };
 
 /**
@@ -37,7 +37,7 @@ const handleTagLayoutScroll = (id: string) => {
   let pos = { top: 0, left: 0, x: 0, y: 0 };
 
   const mouseDownHandler = function (e: any) {
-    ele.style.userSelect = "none";
+    ele.style.userSelect = 'none';
 
     pos = {
       left: ele.scrollLeft,
@@ -47,8 +47,8 @@ const handleTagLayoutScroll = (id: string) => {
       y: e.clientY,
     };
 
-    document.addEventListener("mousemove", mouseMoveHandler);
-    document.addEventListener("mouseup", mouseUpHandler);
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
   };
 
   const mouseMoveHandler = function (e: any) {
@@ -62,15 +62,15 @@ const handleTagLayoutScroll = (id: string) => {
   };
 
   const mouseUpHandler = function () {
-    ele.style.cursor = "grab";
-    ele.style.removeProperty("user-select");
+    ele.style.cursor = 'grab';
+    ele.style.removeProperty('user-select');
 
-    document.removeEventListener("mousemove", mouseMoveHandler);
-    document.removeEventListener("mouseup", mouseUpHandler);
+    document.removeEventListener('mousemove', mouseMoveHandler);
+    document.removeEventListener('mouseup', mouseUpHandler);
   };
 
   // Attach the handler
-  ele.addEventListener("mousedown", mouseDownHandler);
+  ele.addEventListener('mousedown', mouseDownHandler);
 };
 
 /**
@@ -87,8 +87,9 @@ const handleOnClickMainTag = (e: HTMLDivElement) => {
       e.className = e.className.slice(0, 8);
       tagIds.delete(e.id);
     } else {
-      e.className = e.className + " selected";
+      e.className = e.className + ' selected';
       tagIds.add(e.id);
+      console.log(e.className);
     }
   }
 };
@@ -105,25 +106,22 @@ const handleOnClickCardTag = (e: HTMLDivElement) => {
   });
   if (e.className.length <= 8) {
     //like
-    fetch("/like", {
-      method: "PUT",
+    fetch('/like', {
+      method: 'PUT',
       headers: headers,
       body: body,
     });
   } else {
     // unlike
-    fetch("/unlike", {
-      method: "DELETE",
+    fetch('/unlike', {
+      method: 'DELETE',
       headers: headers,
       body: body,
     });
   }
 
   if (e) {
-    e.className =
-      e.className.length > 8
-        ? e.className.slice(0, 8)
-        : e.className + " selected";
+    e.className = e.className.length > 8 ? e.className.slice(0, 8) : e.className + ' selected';
   }
 };
 
@@ -132,6 +130,6 @@ const handleOnClickCardTag = (e: HTMLDivElement) => {
  * @description : handle when user clicked add-review button
  */
 const handleOnClickAddReview = () => {
-  console.log("hi");
-  location.replace("/add-review");
+  console.log('hi');
+  location.replace('/add-review');
 };
