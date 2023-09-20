@@ -1,27 +1,10 @@
-const tagIds = new Set();
-
-document.addEventListener('DOMContentLoaded', function () {
-  handleTagLayoutScroll('main-tag-layout');
-  handleTagLayoutScroll('base-layout');
-
-  const tags = document.getElementsByClassName('main-tag');
-  // const cardTags = this.getElementsByClassName('card-tag');
-
-  // for (const tag of tags) {
-  //   const result = tag.addEventListener("click", handleOnClickTag);
-  // }
-
-  // 태그 투표는 MVP 이후 진행
-  // for (const tag of cardTags) {
-  //   const result = tag.addEventListener('click', handleOnClickTag);
-  // }
-
-  // const addReviewButton = document.getElementById("main-top-add");
-  // addReviewButton?.addEventListener("click", handleOnClickAddReview);
+document.addEventListener("DOMContentLoaded", function () {
+  handleTagLayoutScroll("main-tag-layout");
+  handleTagLayoutScroll("base-layout");
 });
 
 const headers = {
-  'Content-Type': 'application/json',
+  "Content-Type": "application/json",
 };
 
 /**
@@ -37,7 +20,7 @@ const handleTagLayoutScroll = (id: string) => {
   let pos = { top: 0, left: 0, x: 0, y: 0 };
 
   const mouseDownHandler = function (e: any) {
-    ele.style.userSelect = 'none';
+    ele.style.userSelect = "none";
 
     pos = {
       left: ele.scrollLeft,
@@ -47,8 +30,8 @@ const handleTagLayoutScroll = (id: string) => {
       y: e.clientY,
     };
 
-    document.addEventListener('mousemove', mouseMoveHandler);
-    document.addEventListener('mouseup', mouseUpHandler);
+    document.addEventListener("mousemove", mouseMoveHandler);
+    document.addEventListener("mouseup", mouseUpHandler);
   };
 
   const mouseMoveHandler = function (e: any) {
@@ -62,42 +45,38 @@ const handleTagLayoutScroll = (id: string) => {
   };
 
   const mouseUpHandler = function () {
-    ele.style.cursor = 'grab';
-    ele.style.removeProperty('user-select');
+    ele.style.cursor = "grab";
+    ele.style.removeProperty("user-select");
 
-    document.removeEventListener('mousemove', mouseMoveHandler);
-    document.removeEventListener('mouseup', mouseUpHandler);
+    document.removeEventListener("mousemove", mouseMoveHandler);
+    document.removeEventListener("mouseup", mouseUpHandler);
   };
 
   // Attach the handler
-  ele.addEventListener('mousedown', mouseDownHandler);
+  ele.addEventListener("mousedown", mouseDownHandler);
 };
 
 /**
- * @param e MouseEvent
+ * @param e HTMLDivElement
  * @returns: None
- * @description : handle when the tag is clicked
+ * @description : search review when the main tag is clicked
  */
 const handleOnClickMainTag = (e: HTMLDivElement) => {
   // window.scrollTo(0, 0);
   // TODO: 지지님 이 위치에 스크롤 맨 위로 갈 수 있는 함수 하나만 넣어주세요....
-  console.log(tagIds);
   if (e) {
-    if (e.className.length > 8) {
-      e.className = e.className.slice(0, 8);
-      tagIds.delete(e.id);
+    if (e.className.length <= 8) {
+      e.className = e.className + " selected";
     } else {
-      e.className = e.className + ' selected';
-      tagIds.add(e.id);
-      console.log(e.className);
+      e.className = e.className.slice(0, 8);
     }
   }
 };
 
 /**
- * @param e MouseEvent
+ * @param e HTMLDivElement
  * @returns: None
- * @description : handle when the tag is clicked
+ * @description : like or unlikt tag when the card tag is clicked .
  */
 const handleOnClickCardTag = (e: HTMLDivElement) => {
   const body: BodyInit = JSON.stringify({
@@ -105,31 +84,49 @@ const handleOnClickCardTag = (e: HTMLDivElement) => {
     tagId: e.id,
   });
   if (e.className.length <= 8) {
+    e.className = e.className + " selected";
     //like
-    fetch('/like', {
-      method: 'PUT',
+    fetch("/like", {
+      method: "PUT",
       headers: headers,
       body: body,
     });
   } else {
+    e.className = e.className.slice(0, 8);
     // unlike
-    fetch('/unlike', {
-      method: 'DELETE',
+    fetch("/unlike", {
+      method: "DELETE",
       headers: headers,
       body: body,
     });
   }
-
-  if (e) {
-    e.className = e.className.length > 8 ? e.className.slice(0, 8) : e.className + ' selected';
-  }
 };
 
 /**
- * @returns None
- * @description : handle when user clicked add-review button
+ * @param e HTMLDivElement
+ * @returns: None
+ * @description : like or unlikt tag when the card tag is clicked .
  */
-const handleOnClickAddReview = () => {
-  console.log('hi');
-  location.replace('/add-review');
+const handleOnClickAddTag = (e: HTMLDivElement) => {
+  const tagIds = document.getElementById("tagIds") as HTMLInputElement;
+  const set = new Set();
+  tagIds.value.split(",").map((i) => set.add(i));
+
+  if (e.className.length <= 8) {
+    e.className = e.className + " selected";
+    //태그추가
+    set.add(e.id);
+  } else {
+    e.className = e.className.slice(0, 8);
+    //태그삭제
+    set.delete(e.id);
+  }
+  set.delete("");
+
+  tagIds.value = Array.from(set).toString();
+};
+
+const handleAfterRgister = () => {
+  alert("등록되었습니다.");
+  window.location.href = "/";
 };

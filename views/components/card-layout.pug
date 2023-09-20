@@ -1,5 +1,5 @@
 each data in datas
-    .card-container(hx-get="/review/"+data.cardId hx-trigger="intersect" hx-swap="outerHTML")
+    .card-container(hx-get="/card/"+data.cardId hx-trigger="intersect" hx-swap="outerHTML")
         .card-header
             .card-profile 
                 img(src='/assets/icon/pig-profile.png', style='width:60px')

@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="app">  
-  <select id="user">
+  <select id="main/user">
     SELECT NAME
     FROM TB_USER_MASTER
     WHERE USER_ID = #{userId}
   </select>
 
-  <select id="reviews">
+  <select id="main/tags">
+    SELECT TAG_ID as tagId
+          ,TAG_NAME as tagName
+          ,'main' as type
+      FROM TB_TAG_MASTER
+  </select>
+
+  <select id="main/cards">
     SELECT REVIEW_ID AS cardId
     FROM TB_REVIEW_MASTER
     ORDER BY REVIEW_ID DESC
   </select>
 
-  <select id="reviews/tagId">
+  <select id="main/cards/tagId">
     SELECT DISTINCT REVIEW_ID AS cardId
     FROM TB_REVIEW_TAG
     WHERE TAG_ID IN 
@@ -23,7 +30,7 @@
     ORDER BY REVIEW_ID DESC
   </select>
 
-  <select id="review/id">
+  <select id="card/id">
     SELECT TRM.REVIEW_ID as reviewId
           ,TRM.REVIEW_CONTENT as review
           ,TSM.STORE_NAME as storeName
@@ -37,7 +44,7 @@
       AND TRM.REVIEW_ID = #{id}
   </select>
 
-  <select id="review/tags/id">
+  <select id="card/tags/id">
     SELECT TRT.TAG_ID as tagId
           ,TTM.TAG_NAME as tagName
           ,NVL((SELECT 'selected'
@@ -51,13 +58,6 @@
      WHERE TRT.REVIEW_ID = #{id}
   </select>
 
-  <select id="tagdetail">
-    SELECT TAG_ID as tagId
-          ,TAG_NAME as tagName
-          ,'main' as type
-      FROM TB_TAG_MASTER
-  </select>
-
   <insert id="like">
     INSERT INTO TB_USER_REVIEW_TAG(REVIEW_ID,USER_ID,TAG_ID)
     VALUES (#{reviewId},#{userId},#{tagId})
@@ -69,4 +69,32 @@
        AND USER_ID = #{userId}
        AND TAG_ID = #{tagId}
   </delete>
+
+  <select id="add/tagList">
+    SELECT TAG_ID as tagId
+          ,TAG_NAME as tagName
+          ,'add' as type
+      FROM TB_TAG_MASTER
+  </select>
+
+  <insert id="add/review/store">
+    INSERT INTO TB_STORE_MASTER
+      (STORE_NAME)
+    VALUES(#{storeName})
+  </insert>
+
+  <insert id="add/review">
+    INSERT INTO TB_REVIEW_MASTER
+      (STORE_ID, USER_ID, REVIEW_CONTENT)
+    VALUES(#{storeId}, #{userId}, #{reviewContent})
+  </insert>
+
+  <insert id="add/review/tag">
+    INSERT INTO TB_REVIEW_TAG
+      (REVIEW_ID, TAG_ID)
+    VALUES
+    <foreach collection="tagIds" item="tagId" separator=",">
+      (#{reviewId}, #{tagId})
+    </foreach>
+  </insert>
 </mapper>
