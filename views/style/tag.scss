@@ -9,22 +9,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
+  &.selected {
+    background-color: #8c8c8c !important;
+  }
 
-.main-tag.selected {
-  background-color: #8c8c8c !important;
-}
-
-.selected p {
-  color: #ffffff !important;
-}
-
-.main-tag p {
-  font-family: "Noto Sans Tamil UI";
+  font-family: 'Noto Sans Tamil UI';
   font-style: normal;
   font-weight: 400;
   font-size: 1.85rem;
   color: #a2a2a2;
+}
+
+.selected p {
+  color: #ffffff !important;
 }
 
 /* 각 card별 투표 기능 */
@@ -38,16 +35,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
 
-.card-tag p {
-  font-family: "Noto Sans Tamil UI";
+  font-family: 'Noto Sans Tamil UI';
   font-style: normal;
   font-weight: 400;
   font-size: 1.65rem;
   color: #c9c4c4;
-}
 
-.card-tag.selected {
-  background-color: #ffb458 !important;
+  &.selected {
+    background-color: #ffb458 !important;
+  }
 }
