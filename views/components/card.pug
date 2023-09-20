@@ -6,7 +6,7 @@
         .card-store
             p #{data.storeName}
     img(src=data.photo, style='width:100%')
-    .tag-layout(hx-get="/review/tags/"+data.reviewId hx-trigger="load" hx-swap="innerHTML")
+    .tag-layout(hx-get="/card/tags/"+data.reviewId hx-trigger="load" hx-swap="innerHTML")
     .card-review 
         p #{data.review}
     .card-reply 

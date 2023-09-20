@@ -1,3 +1,7 @@
+.selected p {
+  color: #ffffff !important;
+}
+
 /* main화면 상단 태그 선택 부분 */
 .main-tag {
   min-width: 180px;
@@ -13,15 +17,11 @@
     background-color: #8c8c8c !important;
   }
 
-  font-family: 'Noto Sans Tamil UI';
+  font-family: "Noto Sans Tamil UI";
   font-style: normal;
   font-weight: 400;
   font-size: 1.85rem;
   color: #a2a2a2;
-}
-
-.selected p {
-  color: #ffffff !important;
 }
 
 /* 각 card별 투표 기능 */
@@ -36,7 +36,30 @@
   align-items: center;
   justify-content: center;
 
-  font-family: 'Noto Sans Tamil UI';
+  font-family: "Noto Sans Tamil UI";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.65rem;
+  color: #c9c4c4;
+
+  &.selected {
+    background-color: #ffb458 !important;
+  }
+}
+
+/* 리뷰등록 화면에서 */
+.add-tag {
+  min-width: 160px;
+  height: 50px;
+  border-radius: 50px;
+  background-color: #f1f1f1;
+  margin-left: 15px;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "Noto Sans Tamil UI";
   font-style: normal;
   font-weight: 400;
   font-size: 1.65rem;
