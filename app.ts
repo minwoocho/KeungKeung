@@ -44,7 +44,7 @@ app.get("/user", (req, res) => {
   );
   connection.connect(function () {
     try {
-      connection.query(query, function (err, rows: any[], fields) {
+      connection.query(query, function (err, rows: any[]) {
         res.send(rows[0].NAME + "님! 어떤 식당을 찾으시나요?");
       });
     } catch (e) {
@@ -63,7 +63,7 @@ app.get("/reviews", (req, res) => {
   );
   connection.connect(function () {
     try {
-      connection.query(query, function (err, rows: any[], fields) {
+      connection.query(query, function (err, rows: any[]) {
         let template = pug.compileFile("views/components/card-layout.pug");
         res.send(template({ datas: rows }));
       });
@@ -89,7 +89,7 @@ app.get("/reviews/:tagId", (req, res) => {
   );
   connection.connect(function () {
     try {
-      connection.query(query, function (err, rows: any[], fields) {
+      connection.query(query, function (err, rows: any[]) {
         let template = pug.compileFile("views/components/card-layout.pug");
         res.send(template({ datas: rows }));
       });
@@ -109,7 +109,7 @@ app.get("/review/:id", (req, res) => {
   );
   connection.connect(function () {
     try {
-      connection.query(query, function (err, rows: any[], fields) {
+      connection.query(query, function (err, rows: any[]) {
         const data = rows[0];
 
         let template = pug.compileFile("views/components/card.pug");
@@ -132,7 +132,7 @@ app.get("/review/tags/:id", (req, res) => {
     { language: "sql", indent: "  " }
   );
   try {
-    connection.query(query, function (err, rows: any[], fields) {
+    connection.query(query, function (err, rows: any[]) {
       let template = pug.compileFile("views/components/tag-select.pug");
       res.send(template({ tags: rows }));
     });
@@ -149,7 +149,7 @@ app.get("/tagdetail", (req, res) => {
     { language: "sql", indent: "  " }
   );
   try {
-    connection.query(query, function (err, rows: any[], fields) {
+    connection.query(query, function (err, rows: any[]) {
       let template = pug.compileFile("views/components/tag-select.pug");
       res.send(template({ tags: rows }));
     });
@@ -168,9 +168,7 @@ app.put("/like", (req, res) => {
     { language: "sql", indent: "  " }
   );
   try {
-    connection.query(query, function (err, rows: any[], fields) {
-      res.send();
-    });
+    connection.query(query);
   } catch (e) {
     console.log(e);
   }
@@ -186,9 +184,7 @@ app.delete("/unlike", (req, res) => {
     { language: "sql", indent: "  " }
   );
   try {
-    connection.query(query, function (err, rows: any[], fields) {
-      res.send();
-    });
+    connection.query(query);
   } catch (e) {
     console.log(e);
   }

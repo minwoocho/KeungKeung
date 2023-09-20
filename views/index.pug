@@ -10,6 +10,8 @@ html
         a#main-top-add(href="/add-review" hx-boost="true")
           img(src='/assets/icon/add.png', style='width:1.65rem;height:1.65rem')
           p 가게 추가하기
+      //- form(hx-post="" hx-trigger)
+      //- NOTE: 지지님 이 아래 태그레이아웃 메인을 form 태그 안에 넣을 수 있을까요?
       .tag-layout.main(hx-get="/tagdetail" hx-trigger="load")
       #card-list-layout(hx-get="/reviews" hx-trigger="load")
       

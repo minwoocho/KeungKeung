@@ -4,3 +4,4 @@ node_modules
 # js 컴파일 타겟
 dist
 # dist/**/*.js
+# *.js

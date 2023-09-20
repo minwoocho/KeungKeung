@@ -1,3 +1,5 @@
+const tagIds = new Set();
+
 document.addEventListener("DOMContentLoaded", function () {
   handleTagLayoutScroll("main-tag-layout");
   handleTagLayoutScroll("base-layout");
@@ -79,11 +81,15 @@ const handleTagLayoutScroll = (id: string) => {
 const handleOnClickMainTag = (e: HTMLDivElement) => {
   // window.scrollTo(0, 0);
   // TODO: 지지님 이 위치에 스크롤 맨 위로 갈 수 있는 함수 하나만 넣어주세요....
+  console.log(tagIds);
   if (e) {
-    e.className =
-      e.className.length > 8
-        ? e.className.slice(0, 8)
-        : e.className + " selected";
+    if (e.className.length > 8) {
+      e.className = e.className.slice(0, 8);
+      tagIds.delete(e.id);
+    } else {
+      e.className = e.className + " selected";
+      tagIds.add(e.id);
+    }
   }
 };
 
