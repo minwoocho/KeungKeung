@@ -1,3 +1,5 @@
+//- NOTE: 여기 태그들의 클래스를 'tag'로 통일시키고 부모 컴포넌트의 클래스를 보고 조절이 가능할까요..? 아니면 태그가 들어가는 위치별로 별도 컴포넌트로 빼야할거가틈....
+//- NOTE: 이거 input태그로 변환 가능....?
 if tag.type == "main"
     div.main-tag(id=tag.tagId onclick="handleOnClickMainTag(this);"
     hx-get="/reviews/"+tag.tagId hx-trigger="click" hx-target="#card-list-layout")

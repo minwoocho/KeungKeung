@@ -1,4 +1,7 @@
 node_modules
 .vscode
 
-dist/**/*.js
+# js 컴파일 타겟
+dist
+# dist/**/*.js
+# *.js
