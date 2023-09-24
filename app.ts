@@ -32,6 +32,7 @@ app.listen(port, () => {
 app.get("/", (req, res) => {
   app.locals.userId = mockUserId;
   app.locals.tagIds = new Set();
+  console.log("login User : " + app.locals.userId);
   res.render("index");
 });
 
@@ -192,11 +193,23 @@ app.post("/add/review", (req, res) => {
             { language: "sql", indent: "  " }
           );
           connection.query(query3, () => {
-            connection.commit();
+            // connection.commit();
+            console.log("rollback for btn test.");
+            console.log(
+              "inserted data",
+              "\nstoreName : " + storeName,
+              "\nstoreId : " + storeId,
+              "\nuserId : " + userId,
+              "\nreviewContent : " + reviewContent,
+              "\nreviewId : " + reviewId,
+              "\ntagIds : " + tagIds.split(",").toString()
+            );
+            connection.rollback();
           });
         });
       });
-    } catch {
+    } catch (e) {
+      console.log(e);
       connection.rollback();
     }
   });
