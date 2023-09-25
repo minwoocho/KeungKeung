@@ -1,15 +1,13 @@
-doctype html
-html
-  head
-    include import
-    title 킁킁
-  body
-    #base-layout 
-      #main-top
-        p#main-hello(hx-get="/main/user" hx-trigger="load")
-        a#main-top-add(href="/add-review" hx-boost="true")
-          img(src='/assets/icon/add.png', style='width:1.65rem;height:1.65rem')
-          p 가게 추가하기
-      form.tag-layout.main(hx-get="/main/tags" hx-trigger="load" hx-target=".tag-layout.main")
-      #card-list-layout(hx-get="/main/cards" hx-trigger="load")
+extends layout
+
+block top
+  #main-top
+    p#main-hello(hx-get="/main/user" hx-trigger="load")
+    a#main-top-add(href="/add-review")
+      img(src='/assets/icon/add.png', style='width:1.65rem;height:1.65rem')
+      p 가게 추가하기
+block body
+  form.tag-layout.main(hx-get="/main/tags" hx-trigger="load" hx-target=".tag-layout.main")
+  #card-list-layout(hx-get="/main/cards" hx-trigger="load")
+      
       

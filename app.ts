@@ -1,16 +1,15 @@
 import express from "express";
-import pug from "pug";
-import mysql from "mysql"; // mysql 모듈을 불러옵니다.
+import mysql, { MysqlError } from "mysql"; // mysql 모듈을 불러옵니다.
 import mybatisMapprer from "mybatis-mapper";
 import bodyParser from "body-parser";
-// var bodyParser = require('body-parser');
-const app = express();
-const port: number = 3000;
+import multer from "multer";
 
-const mockUserId: string = "00002";
+const app = express();
+const port = 3000;
+
+const mockUserId = "00002";
 
 // 커넥션을 정의합니다.
-// RDS Console 에서 본인이 설정한 값을 입력해주세요.
 const connection = mysql.createConnection({
   host: "keung-rds.colgpa78bwcs.ap-northeast-2.rds.amazonaws.com",
   user: "admin",
@@ -24,14 +23,22 @@ app.use(express.static("public"));
 app.use(express.static("src"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(multer({ storage: multer.memoryStorage() }).array("img"));
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+  console.log(`*===============================*`);
+  console.log(`==         Keung Keung         ==`);
+  console.log(`*===============================*`);
 });
 
+/**
+ * 메인페이지
+ */
 app.get("/", (req, res) => {
   app.locals.userId = mockUserId;
   app.locals.tagIds = new Set();
+  console.log("login User : " + app.locals.userId);
   res.render("index");
 });
 
@@ -43,7 +50,7 @@ app.get("/main/user", (req, res) => {
     { userId },
     { language: "sql", indent: "  " }
   );
-  connection.query(query, function (err: mysql.MysqlError, rows: any[]) {
+  connection.query(query, (err: MysqlError, rows: any) => {
     res.send(rows[0].NAME + "님! 어떤 식당을 찾으시나요?");
   });
 });
@@ -55,7 +62,7 @@ app.get("/main/tags", (req, res) => {
     {},
     { language: "sql", indent: "  " }
   );
-  connection.query(query, function (err: mysql.MysqlError, rows: any[]) {
+  connection.query(query, (err: MysqlError, rows: any) => {
     res.render("components/tag-select", { tags: rows });
   });
 });
@@ -67,7 +74,7 @@ app.get("/main/cards", (req, res) => {
     {},
     { language: "sql", indent: "  " }
   );
-  connection.query(query, function (err: mysql.MysqlError, rows: any[]) {
+  connection.query(query, (err: MysqlError, rows: any) => {
     res.render("components/card-layout", { datas: rows });
   });
 });
@@ -86,7 +93,7 @@ app.get("/cards/:tagId", (req, res) => {
     { tagIds: Array.from(tagIds) },
     { language: "sql", indent: "  " }
   );
-  connection.query(query, function (err: mysql.MysqlError, rows: any[]) {
+  connection.query(query, (err: MysqlError, rows: any) => {
     res.render("components/card-layout", { datas: rows });
   });
 });
@@ -99,7 +106,7 @@ app.get("/card/:id", (req, res) => {
     { id },
     { language: "sql", indent: "  " }
   );
-  connection.query(query, function (err: mysql.MysqlError, rows: any[]) {
+  connection.query(query, (err: MysqlError, rows: any) => {
     res.render("components/card", { data: rows[0] });
   });
 });
@@ -113,7 +120,7 @@ app.get("/card/tags/:id", (req, res) => {
     { id, userId },
     { language: "sql", indent: "  " }
   );
-  connection.query(query, function (err: mysql.MysqlError, rows: any[]) {
+  connection.query(query, (err: MysqlError, rows: any) => {
     res.render("components/tag-select", { tags: rows });
   });
 });
@@ -144,6 +151,9 @@ app.delete("/unlike", (req, res) => {
   res.send();
 });
 
+/**
+ * 리뷰등록 페이지
+ */
 app.get("/add-review", (req, res) => {
   app.locals.addTagIds = new Set();
   res.render("add-review");
@@ -156,49 +166,69 @@ app.get("/add/tagList", (req, res) => {
     {},
     { language: "sql", indent: "  " }
   );
-  connection.query(query, function (err: mysql.MysqlError, rows: any[]) {
+  connection.query(query, (err: MysqlError, rows: any) => {
     res.render("components/tag-select", { tags: rows });
   });
 });
 
 app.post("/add/review", (req, res) => {
   const userId = app.locals.userId;
+  const { storeName, tagIds, reviewContent } = req.body;
+  const files = req.files;
+
+  console.log(files);
+  console.log(
+    "inserted data========================================================================",
+    "\n" + JSON.stringify(req.body),
+    "\ninserted data========================================================================"
+    // "\nstoreName : " + storeName,
+    // "\nuserId : " + userId,
+    // "\nreviewContent : " + reviewContent,
+    // "\ntagIds : " + tagIds.split(",").toString()
+  );
   if (!userId) {
     res.send("세션정보가 없습니다.");
+    console.log("session expired");
+    return;
   }
-  const { storeName, tagIds, reviewContent } = req.body;
   const query = mybatisMapprer.getStatement(
     "app",
     "add/review/store",
     { storeName },
     { language: "sql", indent: "  " }
   );
-  connection.beginTransaction(function () {
+  connection.beginTransaction(() => {
     try {
-      connection.query(query, function (err: mysql.MysqlError, rows: any) {
+      connection.query(query, (err: MysqlError, rows: any) => {
         const storeId = rows.insertId;
+        console.log("storeId: " + storeId);
         const query2 = mybatisMapprer.getStatement(
           "app",
           "add/review",
           { storeId, userId, reviewContent },
           { language: "sql", indent: "  " }
         );
-        connection.query(query2, function (err: mysql.MysqlError, rows: any) {
+        connection.query(query2, (err: MysqlError, rows: any) => {
           const reviewId = rows.insertId;
+          console.log("reviewId: " + reviewId);
           const query3 = mybatisMapprer.getStatement(
             "app",
             "add/review/tag",
             { reviewId, tagIds: tagIds.split(",") },
             { language: "sql", indent: "  " }
           );
-          connection.query(query3, () => {
-            connection.commit();
+          connection.query(query3, (err: MysqlError, rows: any) => {
+            // connection.commit();
+            console.log("rollback for btn test.---------------------");
+            connection.rollback();
+            res.send(true);
           });
         });
       });
-    } catch {
+    } catch (e) {
+      console.log(e);
       connection.rollback();
+      return;
     }
   });
-  res.send(true);
 });

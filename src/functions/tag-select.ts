@@ -125,8 +125,3 @@ const handleOnClickAddTag = (e: HTMLDivElement) => {
 
   tagIds.value = Array.from(set).toString();
 };
-
-const handleAfterRgister = () => {
-  alert("등록되었습니다.");
-  window.location.href = "/";
-};
