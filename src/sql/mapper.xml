@@ -34,14 +34,21 @@
     SELECT TRM.REVIEW_ID as reviewId
           ,TRM.REVIEW_CONTENT as review
           ,TSM.STORE_NAME as storeName
-          ,'/assets/photos/mock-picture.png' as photo
           ,TUM.NAME as userName
       FROM TB_REVIEW_MASTER TRM 
       LEFT OUTER JOIN TB_STORE_MASTER TSM ON TRM.STORE_ID  = TSM.STORE_ID  
       LEFT OUTER JOIN TB_IMAGE_MASTER TIM  ON TRM.REVIEW_ID  = TIM.REVIEW_ID
       LEFT OUTER JOIN TB_USER_MASTER TUM ON TRM.USER_ID  = TUM.USER_ID
-    WHERE 1=1
-      AND TRM.REVIEW_ID = #{id}
+     WHERE 1=1
+       AND TRM.REVIEW_ID = #{id}
+  </select>
+
+  <select id="card/images/id">
+    SELECT IMAGE_DATA as imageData
+      FROM TB_IMAGE_MASTER TIM 
+     WHERE 1=1
+       AND TIM.REVIEW_ID = #{id}
+     ORDER BY IMAGE_SEQ ASC
   </select>
 
   <select id="card/tags/id">
@@ -96,5 +103,12 @@
     <foreach collection="tagIds" item="tagId" separator=",">
       (#{reviewId}, #{tagId})
     </foreach>
+  </insert>
+
+  <insert id="add/review/image" >
+    INSERT INTO TB_IMAGE_MASTER
+      (REVIEW_ID, IMAGE_SEQ, IMAGE_DATA)
+    VALUES
+      (#{reviewId}, #{index}, #{image})
   </insert>
 </mapper>

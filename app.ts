@@ -111,6 +111,30 @@ app.get("/card/:id", (req, res) => {
   });
 });
 
+app.get("/card/images/:id", (req, res) => {
+  const { id } = req.params;
+  const query = mybatisMapprer.getStatement(
+    "app",
+    "card/images/id",
+    { id },
+    { language: "sql", indent: "  " }
+  );
+  connection.query(query, (err: MysqlError, rows: any) => {
+    if (rows.length === 0) {
+      console.error("Image not found");
+      res.status(404).send("Image not found");
+      return;
+    }
+    const imageBuffer = rows[0].imageData;
+    console.log(imageBuffer);
+    res.writeHead(200, {
+      "Content-Type": "image/jpeg", // 이미지 형식에 따라 변경
+      "Content-Length": imageBuffer.length,
+    });
+    res.end(imageBuffer);
+  });
+});
+
 app.get("/card/tags/:id", (req, res) => {
   const userId = app.locals.userId;
   const { id } = req.params;
@@ -155,6 +179,7 @@ app.delete("/unlike", (req, res) => {
  * 리뷰등록 페이지
  */
 app.get("/add-review", (req, res) => {
+  app.locals.userId = mockUserId;
   app.locals.addTagIds = new Set();
   res.render("add-review");
 });
@@ -171,64 +196,68 @@ app.get("/add/tagList", (req, res) => {
   });
 });
 
-app.post("/add/review", (req, res) => {
+app.post("/add/review", async (req, res) => {
   const userId = app.locals.userId;
   const { storeName, tagIds, reviewContent } = req.body;
-  const files = req.files;
+  const files = req.files as Express.Multer.File[];
+  const images = files.map((item) => item.buffer.toString("base64"));
 
-  console.log(files);
-  console.log(
-    "inserted data========================================================================",
-    "\n" + JSON.stringify(req.body),
-    "\ninserted data========================================================================"
-    // "\nstoreName : " + storeName,
-    // "\nuserId : " + userId,
-    // "\nreviewContent : " + reviewContent,
-    // "\ntagIds : " + tagIds.split(",").toString()
-  );
+  console.log("==================inserted data==================");
+  // console.log(images);
+  console.log(JSON.stringify(req.body));
+  console.log("==================inserted data==================");
+
   if (!userId) {
     res.send("세션정보가 없습니다.");
     console.log("session expired");
     return;
   }
-  const query = mybatisMapprer.getStatement(
-    "app",
-    "add/review/store",
-    { storeName },
-    { language: "sql", indent: "  " }
-  );
+
   connection.beginTransaction(() => {
-    try {
-      connection.query(query, (err: MysqlError, rows: any) => {
-        const storeId = rows.insertId;
-        console.log("storeId: " + storeId);
-        const query2 = mybatisMapprer.getStatement(
+    const query1 = mybatisMapprer.getStatement(
+      "app",
+      "add/review/store",
+      { storeName },
+      { language: "sql", indent: "  " }
+    );
+    connection.query(query1, (err: MysqlError, rows: any) => {
+      const storeId = rows.insertId;
+      const query2 = mybatisMapprer.getStatement(
+        "app",
+        "add/review",
+        { storeId, userId, reviewContent },
+        { language: "sql", indent: "  " }
+      );
+      connection.query(query2, (err: MysqlError, rows: any) => {
+        const reviewId = rows.insertId;
+        const query3 = mybatisMapprer.getStatement(
           "app",
-          "add/review",
-          { storeId, userId, reviewContent },
+          "add/review/tag",
+          { reviewId, tagIds: tagIds.split(",") },
           { language: "sql", indent: "  " }
         );
-        connection.query(query2, (err: MysqlError, rows: any) => {
-          const reviewId = rows.insertId;
-          console.log("reviewId: " + reviewId);
-          const query3 = mybatisMapprer.getStatement(
+        connection.query(query3, (err, rows) => {
+          // connection.commit();
+          // console.log("rollback for btn test.---------------------");
+          // connection.rollback();
+          // res.send(true);
+        });
+        images.forEach((image, index) => {
+          const query4 = mybatisMapprer.getStatement(
             "app",
-            "add/review/tag",
-            { reviewId, tagIds: tagIds.split(",") },
+            "add/review/image",
+            { reviewId, index, image },
             { language: "sql", indent: "  " }
           );
-          connection.query(query3, (err: MysqlError, rows: any) => {
-            // connection.commit();
-            console.log("rollback for btn test.---------------------");
-            connection.rollback();
-            res.send(true);
+          connection.query(query4, (err, rows) => {
+            connection.commit();
+            // console.log("rollback for btn test.---------------------");
+            // connection.rollback();
+            // res.send(true);
           });
         });
       });
-    } catch (e) {
-      console.log(e);
-      connection.rollback();
-      return;
-    }
+    });
   });
+  res.send();
 });

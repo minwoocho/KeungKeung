@@ -7,7 +7,7 @@ block top
       p 새로운 가게 등록하기
 block body
   #add-review-layout
-    form.add-picture(name="imgs")
+    form.add-picture(enctype = "multipart/form-data" name="imgs")
       //- img#add-icon-button(src='assets/icon/add.png')
       input.img#img(type="file" name="img" multiple)
       p 사진 추가하기
