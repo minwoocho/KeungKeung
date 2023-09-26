@@ -5,7 +5,7 @@
             p #{data.userName}
         .card-store
             p #{data.storeName}
-    img(src=data.photo, style='width:100%')
+    img(src="/card/images/"+data.reviewId alt="Image 1")
     .tag-layout(hx-get="/card/tags/"+data.reviewId hx-trigger="load" hx-swap="innerHTML")
     .card-review 
         p #{data.review}
