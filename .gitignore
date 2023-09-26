@@ -1,5 +1,6 @@
 node_modules
 .vscode
+package-lock.json
 
 # js 컴파일 타겟
 dist
