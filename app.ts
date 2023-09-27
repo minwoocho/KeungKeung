@@ -65,7 +65,6 @@ const start = async () => {
     console.log(`*===============================*`);
     console.log(`==         Keung Keung         ==`);
     console.log(`*===============================*`);
-    console.log(process.env.TESTTT);
   });
 
   /**
