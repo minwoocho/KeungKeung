@@ -1,8 +1,9 @@
-node_modules
 .vscode
+node_modules
 package-lock.json
+
+# 이건 뭔파일인데 자꾸 생겨나는거지;
+.DS_Store
 
 # js 컴파일 타겟
 dist
-# dist/**/*.js
-# *.js
