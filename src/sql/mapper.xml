@@ -45,6 +45,7 @@
 
   <select id="card/images/id">
     SELECT IMAGE_DATA as imageData
+          ,MIMETYPE as mimetype
       FROM TB_IMAGE_MASTER TIM 
      WHERE 1=1
        AND TIM.REVIEW_ID = #{id}
@@ -107,8 +108,8 @@
 
   <insert id="add/review/image" >
     INSERT INTO TB_IMAGE_MASTER
-      (REVIEW_ID, IMAGE_SEQ, IMAGE_DATA)
+      (REVIEW_ID, IMAGE_SEQ, IMAGE_DATA, ORIGINAL_NAME, MIMETYPE)
     VALUES
-      (#{reviewId}, #{index}, #{image})
+      (#{reviewId}, #{index}, ?, #{originalname}, #{mimetype})
   </insert>
 </mapper>

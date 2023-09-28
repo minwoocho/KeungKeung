@@ -27,21 +27,55 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(multer({ storage: multer.memoryStorage() }).array("img"));
 
-const start = async () => {
-  // 커넥션을 정의합니다.
-  const connection = await mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-  });
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  connectionLimit: 30,
+});
 
-  const select = (sql: string, val?: string) => {
+const start = async () => {
+  // 마이바티스 매퍼 정의
+  mybatisMapprer.createMapper(["src/sql/mapper.xml"]);
+
+  const bindSQL = (id: string, param?: Params) => {
+    console.log(id);
+    return mybatisMapprer.getStatement("app", id, param, {
+      language: "sql",
+      indent: "  ",
+    });
+  };
+
+  // 커넥션을 정의합니다.
+  // const connection = await mysql.createConnection({
+  //   host: process.env.DB_HOST,
+  //   user: process.env.DB_USER,
+  //   password: process.env.DB_PASSWORD,
+  //   database: process.env.DB_DATABASE,
+  //   connectionLimit: 30,
+  // });
+
+  const getConnection = async () => {
+    const connection = await pool.getConnection();
+
+    return {
+      connection,
+      [Symbol.asyncDispose]: async () => {
+        console.log("Release Connsetion!");
+        connection.release();
+      },
+    };
+  };
+
+  const { connection } = await getConnection();
+
+  const select = async (sql: string, val?: string) => {
     logging && console.log(sql);
     return connection.query(sql, val) as Promise<[RowDataPacket[], FieldPacket[]]>;
   };
 
-  const insert = (sql: string, val?: string) => {
+  const insert = (sql: string, val?: any) => {
     logging && console.log(sql);
     return connection.query(sql, val) as Promise<[ResultSetHeader, FieldPacket[]]>;
   };
@@ -51,21 +85,11 @@ const start = async () => {
     return connection.query(sql, val) as Promise<[ResultSetHeader, FieldPacket[]]>;
   };
 
-  // 마이바티스 매퍼 정의
-  mybatisMapprer.createMapper(["src/sql/mapper.xml"]);
-
-  const bindSQL = (id: string, param?: Params) =>
-    mybatisMapprer.getStatement("app", id, param, {
-      language: "sql",
-      indent: "  ",
-    });
-
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
     console.log(`*===============================*`);
     console.log(`==         Keung Keung         ==`);
     console.log(`*===============================*`);
-    console.log(process.env.TESTTT);
   });
 
   /**
@@ -121,7 +145,6 @@ const start = async () => {
     const { id } = req.params;
     const sql = bindSQL("card/images/id", { id });
     const [rows, fields] = await select(sql);
-
     if (rows.length === 0) {
       console.error("Image not found");
       res.status(404).send("Image not found");
@@ -129,7 +152,7 @@ const start = async () => {
     }
     const imageBuffer = rows[0].imageData;
     res.writeHead(200, {
-      "Content-Type": "image/jpeg", // 이미지 형식에 따라 변경
+      "Content-Type": rows[0].mimetype,
       "Content-Length": imageBuffer.length,
     });
     res.end(imageBuffer);
@@ -175,10 +198,15 @@ const start = async () => {
   });
 
   app.post("/add/review", async (req, res, next) => {
-    const userId = app.locals.userId;
+    console.log(0);
+    const userId = mockUserId;
     const { storeName, tagIds, reviewContent } = req.body;
     const files = req.files as Express.Multer.File[];
     const images = files.map((item) => item.buffer.toString("base64"));
+
+    const data = files[0].buffer;
+    const originalName = files[0].originalname;
+    const mimetype = files[0].mimetype;
 
     console.log("==================inserted data==================");
     console.log(JSON.stringify(req.body));
@@ -190,35 +218,57 @@ const start = async () => {
       return;
     }
 
+    console.log(1);
     await connection.beginTransaction();
 
     try {
+      console.log(2);
       const sql1 = bindSQL("add/review/store", { storeName });
       const [result1] = await insert(sql1);
       const storeId = result1.insertId;
+      console.log(3);
 
       const sql2 = bindSQL("add/review", { storeId, userId, reviewContent });
       const [result2] = await insert(sql2);
       const reviewId = result2.insertId;
+      console.log(4);
 
       const sql3 = bindSQL("add/review/tag", { reviewId, tagIds: tagIds.split(",") });
+      console.log(sql3);
 
-      const insertImages = images.map((image, index) => {
-        const sql4 = bindSQL("add/review/image", { reviewId, index, image });
-        return insert(sql4);
+      console.log(5);
+      console.log(files);
+
+      const insertImages = files.map((file, index) => {
+        const image = file.buffer;
+        const mimetype = file.mimetype;
+        const originalname = file.originalname;
+        const sql4 = bindSQL("add/review/image", {
+          reviewId,
+          index,
+          mimetype,
+          originalname,
+        });
+        console.log(15);
+        return insert(sql4, [image]);
       });
+      console.log(6);
 
-      await Promise.all([insert(sql3), ...insertImages]);
+      await insert(sql3);
+      console.log(7);
+
+      await Promise.all([...insertImages]);
+      console.log(8);
 
       connection.commit();
+      console.log(9);
+      res.send();
     } catch (e) {
+      console.error("!!!!!!!!");
       connection.rollback();
       next(e);
-    } finally {
-      connection.end();
     }
-
-    res.send();
   });
 };
+
 start();
