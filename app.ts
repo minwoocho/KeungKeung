@@ -141,15 +141,17 @@ const start = async () => {
     res.render("components/card", { data: rows[0] });
   });
 
-  app.get("/card/images/:id", async (req, res) => {
-    const { id } = req.params;
-    const sql = bindSQL("card/images/id", { id });
+  app.get("/card/images/:id/:seq", async (req, res) => {
+    const { id, seq } = req.params;
+    const sql = bindSQL("card/images/id", { id, seq });
     const [rows, fields] = await select(sql);
+
     if (rows.length === 0) {
       console.error("Image not found");
       res.status(404).send("Image not found");
       return;
     }
+
     const imageBuffer = rows[0].imageData;
     res.writeHead(200, {
       "Content-Type": rows[0].mimetype,
@@ -204,12 +206,9 @@ const start = async () => {
     const files = req.files as Express.Multer.File[];
     const images = files.map((item) => item.buffer.toString("base64"));
 
-    const data = files[0].buffer;
-    const originalName = files[0].originalname;
-    const mimetype = files[0].mimetype;
-
     console.log("==================inserted data==================");
     console.log(JSON.stringify(req.body));
+    console.log(files);
     console.log("==================inserted data==================");
 
     if (!userId) {
@@ -249,7 +248,12 @@ const start = async () => {
           mimetype,
           originalname,
         });
-        console.log(15);
+        console.log(15, {
+          reviewId,
+          index,
+          mimetype,
+          originalname,
+        });
         return insert(sql4, [image]);
       });
       console.log(6);
@@ -262,9 +266,10 @@ const start = async () => {
 
       connection.commit();
       console.log(9);
-      res.send();
+      res.send("/");
+      // res.render("/");
     } catch (e) {
-      console.error("!!!!!!!!");
+      console.error("ROLLBACK!!!\npost./add/review\nROLLBACK!!!");
       connection.rollback();
       next(e);
     }

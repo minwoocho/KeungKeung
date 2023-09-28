@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="app">  
 
+  <insert id="user">
+    INSERT INTO TB_USER_MASTER
+      (EMAIL, NAME, TEAM, IMAGE)
+    VALUES
+      (#{email}, SUBSTRING_INDEX(#{slackId},'_',2),SUBSTRING_INDEX(#{slackId},'_',1),#{slcakImage})
+  </insert>
 
   <select id="main/user">
     SELECT NAME as name
@@ -37,6 +43,7 @@
           ,TRM.REVIEW_CONTENT as review
           ,TSM.STORE_NAME as storeName
           ,TUM.NAME as userName
+          ,(SELECT COUNT(*) FROM TB_IMAGE_MASTER TIM WHERE TRM.REVIEW_ID  = TIM.REVIEW_ID) AS imageCount
       FROM TB_REVIEW_MASTER TRM 
       LEFT OUTER JOIN TB_STORE_MASTER TSM ON TRM.STORE_ID  = TSM.STORE_ID  
       LEFT OUTER JOIN TB_IMAGE_MASTER TIM  ON TRM.REVIEW_ID  = TIM.REVIEW_ID
@@ -51,6 +58,7 @@
       FROM TB_IMAGE_MASTER TIM 
      WHERE 1=1
        AND TIM.REVIEW_ID = #{id}
+       AND TIM.IMAGE_SEQ = #{seq}
      ORDER BY IMAGE_SEQ ASC
   </select>
 

@@ -1,3 +1,6 @@
+mixin imglist (seq)
+  img(src=`/card/images/${data.reviewId}/${seq}`)
+
 .card-container(id=data.reviewId)
     .card-header 
         .card-profile 
@@ -5,11 +8,12 @@
             p #{data.userName}
         .card-store
             p #{data.storeName}
-    img(src="/card/images/"+data.reviewId alt="Image 1")
+    - var seq = 0;
+    while seq < data.imageCount
+        +imglist(seq++)
     .tag-layout(hx-get="/card/tags/"+data.reviewId hx-trigger="load" hx-swap="innerHTML")
     .card-review 
         p #{data.review}
     .card-reply 
         p 댓글 15개
         
-
