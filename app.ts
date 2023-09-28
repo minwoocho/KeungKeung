@@ -76,29 +76,30 @@ const start = async () => {
     });
   };
 
+  const { connection } = await getConnection();
+
   const select = (sql: string, val?: string) => {
     loggingLevel >= 3 && console.log(sql);
-    return connection.query(sql, val) as Promise<[RowDataPacket[], FieldPacket[]]>;
+    return connection.execute(sql, val) as Promise<[RowDataPacket[], FieldPacket[]]>;
   };
 
   const insert = (sql: string, val?: any) => {
     loggingLevel >= 3 && console.log(sql);
-    return connection.query(sql, val) as Promise<[ResultSetHeader, FieldPacket[]]>;
+    return connection.execute(sql, val) as Promise<[ResultSetHeader, FieldPacket[]]>;
   };
 
   const remove = (sql: string, val?: string) => {
     loggingLevel >= 3 && console.log(sql);
-    return connection.query(sql, val) as Promise<[ResultSetHeader, FieldPacket[]]>;
+    return connection.execute(sql, val) as Promise<[ResultSetHeader, FieldPacket[]]>;
   };
 
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
+    console.log(`Logging level: ${loggingLevel}`);
     console.log(`*===============================*`);
     console.log(`==         Keung Keung         ==`);
     console.log(`*===============================*`);
   });
-
-  const { connection } = await getConnection();
 
   /**
    * 메인페이지
