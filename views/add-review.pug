@@ -11,7 +11,8 @@ block body
       //- img#add-icon-button(src='assets/icon/add.png')
       input.img#img(type="file" name="img" multiple)
       p 사진 추가하기
-    form.review-form(hx-post="/add/review" hx-include="form.add-picture" hx-on::after-request="alert('저장되었습니다.'); location.href = '/';" hx-swap="none" enctype = "multipart/form-data")
+    form.review-form(hx-post="/add/review" hx-include="form.add-picture" hx-swap="none" enctype = "multipart/form-data"
+    hx-on::after-request="alert('저장되었습니다.'); location.href = '/';")
       input.form-input-text(type="text" name="storeName" placeholder="가게명을 입력해주세요")
       //- input.form-input-text(type="text", name="tst", placeholder="전화번호")
       //- input.form-input-text(type="text", name="tst", placeholder="주소")

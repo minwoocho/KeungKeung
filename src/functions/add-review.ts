@@ -1,8 +1,8 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const tags = document.getElementsByClassName('card-tag');
+document.addEventListener("DOMContentLoaded", function () {
+  const tags = document.getElementsByClassName("card-tag");
 
   for (const tag of tags) {
-    tag.addEventListener('click', handleAddTag);
+    tag.addEventListener("click", handleAddTag);
   }
 });
 
@@ -14,5 +14,5 @@ document.addEventListener('DOMContentLoaded', function () {
 const handleAddTag = (e: Event) => {
   const selectedTag = e.currentTarget as HTMLDivElement;
 
-  selectedTag.style.display = 'none';
+  selectedTag.style.display = "none";
 };
