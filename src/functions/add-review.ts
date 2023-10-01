@@ -16,3 +16,14 @@ const handleAddTag = (e: Event) => {
 
   selectedTag.style.display = 'none';
 };
+
+const loadFile = (input: any) => {
+  const file = input.files[0];
+
+  const newImage = document.createElement('img');
+  newImage.setAttribute('class', 'new-image');
+  newImage.src = URL.createObjectURL(file);
+
+  const imageContainer = document.getElementById('image-container');
+  imageContainer?.appendChild(newImage);
+};

@@ -20,6 +20,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  .new-image {
+    width: 30%;
+    height: 30%;
+  }
 }
 
 .add-picture img {
@@ -28,7 +32,7 @@
   margin-right: 10px;
 }
 .add-picture p {
-  font-family: "Noto Looped Thai";
+  font-family: 'Noto Looped Thai';
   font-style: normal;
   font-weight: 400;
   font-size: 1.65rem;
@@ -62,7 +66,7 @@
 }
 
 .form-input-text::placeholder {
-  font-family: "Noto Looped Thai";
+  font-family: 'Noto Looped Thai';
   font-style: normal;
   font-weight: 400;
   font-size: 2rem;
@@ -75,7 +79,7 @@
   border: 3px solid #e6e6e6;
   border-radius: 30px;
   &::placeholder {
-    font-family: "Noto Looped Thai";
+    font-family: 'Noto Looped Thai';
     font-style: normal;
     font-weight: 400;
     font-size: 2rem;
@@ -100,7 +104,7 @@
   border-radius: 40px;
   border: none;
 
-  font-family: "Noto Looped Thai";
+  font-family: 'Noto Looped Thai';
   font-style: normal;
   font-weight: 400;
   font-size: 2rem;
