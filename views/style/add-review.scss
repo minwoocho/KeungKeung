@@ -20,6 +20,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  .new-image {
+    width: 30%;
+    height: 30%;
+  }
 }
 
 .add-picture img {
@@ -41,7 +45,7 @@
 
 /* form 영역 */
 .review-form {
-  width: 800px;
+  width: 850px;
   height: 1000px;
   display: flex;
   flex-direction: column;
@@ -54,11 +58,12 @@
 
 /* input 태그 영역 */
 .form-input-text {
-  width: 100%;
+  width: 95%;
   height: 95px;
   border: 3px solid #e6e6e6;
   border-radius: 30px;
-  font-size: xxx-large;
+  font-size: 2rem;
+  padding-left: 41px;
 }
 
 .form-input-text::placeholder {
@@ -70,10 +75,13 @@
 }
 
 .form-input.textarea {
-  width: 100%;
+  width: 95%;
   height: 430px;
   border: 3px solid #e6e6e6;
   border-radius: 30px;
+  font-size: 2rem;
+  padding-left: 41px;
+  padding-top: 34px;
   &::placeholder {
     font-family: "Noto Looped Thai";
     font-style: normal;
@@ -81,6 +89,20 @@
     font-size: 2rem;
     line-height: 22px;
   }
+}
+
+#input-tag-p {
+  width: 100%;
+  font-size: 28px;
+  height: 28px;
+  margin-bottom: 2px;
+  color: #df7f00;
+  margin-left: 10px;
+}
+
+#add-tag-list {
+  border-radius: 30px;
+  border: 3px solid #e6e6e6;
 }
 
 /* 버튼 영역 */
