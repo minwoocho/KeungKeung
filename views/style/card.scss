@@ -136,13 +136,14 @@
   font-family: "Noto Looped Thai";
   font-style: normal;
   font-weight: 400;
-  font-size: 1.85rem;
-  line-height: 2.2rem;
+  font-size: 2.2rem;
+  line-height: 2.5rem;
   color: #696969;
 }
 
 .card-review p {
   margin: 0;
+  -webkit-user-modify: read-write-plaintext-only;
 }
 
 /* 댓글 영역 */

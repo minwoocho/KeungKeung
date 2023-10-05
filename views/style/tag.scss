@@ -14,16 +14,21 @@
   align-items: center;
   justify-content: center;
   border: none;
-  &.selected {
-    background-color: #8c8c8c !important;
+  > input {
+    appearance: none;
   }
-
+  &:has(> input:checked) {
+    background-color: #8c8c8c !important;
+    color: #ffffff !important;
+  }
   // 폰트 구역
-  font-family: 'Noto Sans Tamil UI';
+  font-family: "Noto Sans Tamil UI";
   font-style: normal;
   font-weight: 400;
   font-size: 1.85rem;
   color: #a2a2a2;
+
+  transition: 300ms;
 }
 
 /* 각 card별 투표 기능 */
@@ -40,7 +45,7 @@
   border: none;
 
   // 폰트 구역
-  font-family: 'Noto Sans Tamil UI';
+  font-family: "Noto Sans Tamil UI";
   font-style: normal;
   font-weight: 400;
   font-size: 1.65rem;
@@ -65,7 +70,7 @@
   border: none;
 
   // 폰트 구역
-  font-family: 'Noto Sans Tamil UI';
+  font-family: "Noto Sans Tamil UI";
   font-style: normal;
   font-weight: 400;
   font-size: 1.65rem;

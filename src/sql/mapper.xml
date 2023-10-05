@@ -22,19 +22,21 @@
       FROM TB_TAG_MASTER
   </select>
 
-  <select id="main/cards">
+  <!-- <select id="main/cards">
     SELECT REVIEW_ID AS cardId
     FROM TB_REVIEW_MASTER
     ORDER BY REVIEW_ID DESC
-  </select>
+  </select> -->
 
-  <select id="main/cards/tagId">
+  <select id="main/cards">
     SELECT DISTINCT REVIEW_ID AS cardId
     FROM TB_REVIEW_TAG
-    WHERE TAG_ID IN 
-    <foreach collection="tagIds" item="tagId" separator="," open="(" close=")">
-      #{tagId}
-    </foreach>
+    <if test="tagIds.length">
+      WHERE TAG_ID IN 
+      <foreach collection="tagIds" item="tagId" separator="," open="(" close=")">
+        #{tagId}
+      </foreach>
+    </if>
     ORDER BY REVIEW_ID DESC
   </select>
 
