@@ -3,10 +3,31 @@ import mysql, { RowDataPacket, FieldPacket, ResultSetHeader } from "mysql2/promi
 import mybatisMapprer, { Params } from "mybatis-mapper";
 import bodyParser from "body-parser";
 import multer from "multer";
+import session from "express-session";
+// import MySQLStore from "express-mysql-session";
+import MySQLStore from "express-mysql-session";
+// MySQLStore(session);
+// const options = {
+//   host: "localhost",
+//   port: 3306,
+//   user: "",
+//   password: "",
+//   database: "",
+// };
+// const sessionStore = MySQLStore(session);
 
 require("dotenv").config();
 
 const app = express();
+
+// app.use(
+//   session({
+//     secret: "asdfasffdas",
+//     resave: false,
+//     saveUninitialized: true,
+//     store: sessionStore,
+//   }),
+// );
 
 const port = 3000;
 
@@ -19,17 +40,29 @@ const mockUserId = "00002";
 // # none: 0
 const loggingLevel = Number.parseInt(process.env.LOGGING_LEVEL || "0");
 
-// const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-//   console.log("errorHandler Executed!");
-//   loggingLevel >= 1 && console.error("에러 발생: ", err);
-//   res.status(500).send({ message: "서버 에러 발생" });
-//   next(err);
-// };
-
 const sessionHandler = (req: Request, res: Response, next: NextFunction) => {
   app.locals.userId = mockUserId;
+  console.log("sessionHandler");
   next();
 };
+
+function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+  console.error("errorHandler Executed!");
+  loggingLevel >= 1 && console.error("에러 발생: ", err);
+  res.status(500).send({ message: "서버 에러 발생" });
+  next(err);
+}
+
+app.set("view engine", "pug");
+
+app.use(express.static("public"));
+app.use(express.static("src"));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(multer({ storage: multer.memoryStorage() }).array("img"));
+
+app.use(sessionHandler);
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -53,18 +86,6 @@ const getConnection = async () => {
 };
 
 const start = async () => {
-  app.set("view engine", "pug");
-
-  app.use(express.static("public"));
-  app.use(express.static("src"));
-
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(bodyParser.json());
-  app.use(multer({ storage: multer.memoryStorage() }).array("img"));
-
-  app.use(sessionHandler);
-  // app.use(errorHandler);
-
   // 마이바티스 매퍼 정의
   mybatisMapprer.createMapper(["src/sql/mapper.xml"]);
 
@@ -200,7 +221,7 @@ const start = async () => {
     res.render("add-review");
   });
 
-  app.get("/add/tagList", async (req, res) => {
+  app.get("/add/tagList", async (req, res, next) => {
     const sql = bindSQL("add/tagList");
     const [rows, fields] = await select(sql);
     res.render("components/tag-select", { tags: rows });
@@ -211,7 +232,6 @@ const start = async () => {
     const userId = mockUserId;
     const { storeName, tagIds, reviewContent } = req.body;
     const files = req.files as Express.Multer.File[];
-    const images = files.map((item) => item.buffer.toString("base64"));
 
     loggingLevel >= 2 && console.log("==================inserted data==================");
     loggingLevel >= 2 && console.log(JSON.stringify(req.body));
@@ -253,9 +273,14 @@ const start = async () => {
       connection.commit();
       res.end();
     } catch (e) {
+      console.log(next);
       connection.rollback();
       next(e);
     }
+  });
+  app.post("/testss", async (req, res, next) => {
+    console.log(req.body);
+    res.end();
   });
 };
 

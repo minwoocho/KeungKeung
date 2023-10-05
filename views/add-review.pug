@@ -8,7 +8,7 @@ block top
 block body
   #add-review-layout(hx-get="/add/tagList" hx-trigger="load" hx-swap="innerHTML" hx-target=".tag-layout.card")
     form.add-picture(enctype = "multipart/form-data" name="imgs")
-      //- img#add-icon-button(src='assets/icon/add.png')
+      img#add-icon-button(src='assets/icon/add.png')
       input.img#img(type="file" name="img" multiple)
       p 사진 추가하기
     form.review-form(hx-post="/add/review" hx-include="form.add-picture" hx-swap="none" enctype = "multipart/form-data"
@@ -21,4 +21,4 @@ block body
       .tag-layout.card
       textarea.form-input.textarea(name='reviewContent' placeholder="리뷰를 입력해주세요")
       .save-button-section 
-          button.save-button(type="submit") 저장
+        button.save-button(type="submit") 저장

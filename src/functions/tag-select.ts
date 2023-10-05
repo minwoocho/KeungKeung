@@ -1,10 +1,10 @@
-document.addEventListener("DOMContentLoaded", function () {
-  handleTagLayoutScroll("main-tag-layout");
-  handleTagLayoutScroll("base-layout");
+document.addEventListener('DOMContentLoaded', function () {
+  handleTagLayoutScroll('main-tag-layout');
+  handleTagLayoutScroll('base-layout');
 });
 
 const headers = {
-  "Content-Type": "application/json",
+  'Content-Type': 'application/json',
 };
 
 /**
@@ -17,10 +17,10 @@ const handleTagLayoutScroll = (id: string) => {
   const ele = document.getElementById(id);
   if (!ele) return;
 
-  let pos = { top: 0, left: 0, x: 0, y: 0 };
+  let pos = {top: 0, left: 0, x: 0, y: 0};
 
   const mouseDownHandler = function (e: any) {
-    ele.style.userSelect = "none";
+    ele.style.userSelect = 'none';
 
     pos = {
       left: ele.scrollLeft,
@@ -30,8 +30,8 @@ const handleTagLayoutScroll = (id: string) => {
       y: e.clientY,
     };
 
-    document.addEventListener("mousemove", mouseMoveHandler);
-    document.addEventListener("mouseup", mouseUpHandler);
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
   };
 
   const mouseMoveHandler = function (e: any) {
@@ -45,15 +45,15 @@ const handleTagLayoutScroll = (id: string) => {
   };
 
   const mouseUpHandler = function () {
-    ele.style.cursor = "grab";
-    ele.style.removeProperty("user-select");
+    ele.style.cursor = 'grab';
+    ele.style.removeProperty('user-select');
 
-    document.removeEventListener("mousemove", mouseMoveHandler);
-    document.removeEventListener("mouseup", mouseUpHandler);
+    document.removeEventListener('mousemove', mouseMoveHandler);
+    document.removeEventListener('mouseup', mouseUpHandler);
   };
 
   // Attach the handler
-  ele.addEventListener("mousedown", mouseDownHandler);
+  ele.addEventListener('mousedown', mouseDownHandler);
 };
 
 /**
@@ -66,7 +66,7 @@ const handleOnClickMainTag = (e: HTMLDivElement) => {
   // TODO: 지지님 이 위치에 스크롤 맨 위로 갈 수 있는 함수 하나만 넣어주세요....
   if (e) {
     if (e.className.length <= 8) {
-      e.className = e.className + " selected";
+      e.className = e.className + ' selected';
     } else {
       e.className = e.className.slice(0, 8);
     }
@@ -84,18 +84,18 @@ const handleOnClickCardTag = (e: HTMLDivElement) => {
     tagId: e.id,
   });
   if (e.className.length <= 8) {
-    e.className = e.className + " selected";
+    e.className = e.className + ' selected';
     //like
-    fetch("/like", {
-      method: "PUT",
+    fetch('/like', {
+      method: 'PUT',
       headers: headers,
       body: body,
     });
   } else {
     e.className = e.className.slice(0, 8);
     // unlike
-    fetch("/unlike", {
-      method: "DELETE",
+    fetch('/unlike', {
+      method: 'DELETE',
       headers: headers,
       body: body,
     });
@@ -108,12 +108,12 @@ const handleOnClickCardTag = (e: HTMLDivElement) => {
  * @description : like or unlikt tag when the card tag is clicked .
  */
 const handleOnClickAddTag = (e: HTMLDivElement) => {
-  const tagIds = document.getElementById("tagIds") as HTMLInputElement;
+  const tagIds = document.getElementById('tagIds') as HTMLInputElement;
   const set = new Set();
-  tagIds.value.split(",").map((i) => set.add(i));
+  tagIds.value.split(',').map((i) => set.add(i));
 
   if (e.className.length <= 8) {
-    e.className = e.className + " selected";
+    e.className = e.className + ' selected';
     //태그추가
     set.add(e.id);
   } else {
@@ -121,7 +121,7 @@ const handleOnClickAddTag = (e: HTMLDivElement) => {
     //태그삭제
     set.delete(e.id);
   }
-  set.delete("");
+  set.delete('');
 
   tagIds.value = Array.from(set).toString();
 };
