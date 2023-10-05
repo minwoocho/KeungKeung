@@ -1,9 +1,10 @@
 //- NOTE: 여기 태그들의 클래스를 'tag'로 통일시키고 부모 컴포넌트의 클래스를 보고 조절이 가능할까요..? 아니면 태그가 들어가는 위치별로 별도 컴포넌트로 빼야할거가틈....
 case tag.type
   when "main"
-    input(class=tag.type+"-tag" id=tag.tagId type='button' value=`#${tag.tagName}` name=`${tag.tagName}`
+    input(class=tag.type+"-tag" id=tag.tagId type='checkbox' value=tag.tagId name='tagId'
     onclick="handleOnClickMainTag(this);"
-    hx-get="/cards/"+tag.tagId hx-trigger="click" hx-target="#card-list-layout")
+    hx-post="/main/cards" hx-trigger="click" hx-target="#card-list-layout")
+    //- input(type='checkbox')
   when "card"
     input(class=tag.type+"-tag "+tag.likes id=tag.tagId type='button' value=`#${tag.tagName}`
     onclick="handleOnClickCardTag(this);")

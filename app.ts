@@ -29,7 +29,7 @@ const app = express();
 //   }),
 // );
 
-const port = 3000;
+const port = 3001;
 
 const mockUserId = "00002";
 
@@ -42,7 +42,6 @@ const loggingLevel = Number.parseInt(process.env.LOGGING_LEVEL || "0");
 
 const sessionHandler = (req: Request, res: Response, next: NextFunction) => {
   app.locals.userId = mockUserId;
-  console.log("sessionHandler");
   next();
 };
 
@@ -131,7 +130,7 @@ const start = async () => {
     res.render("index");
   });
 
-  app.get("/main/user", async (req, res, next) => {
+  app.get("/main/user", async (req, res) => {
     const userId = app.locals.userId;
     const sql = bindSQL("main/user", { userId });
     const [rows, fields] = await select(sql);
@@ -144,21 +143,11 @@ const start = async () => {
     res.render("components/tag-select", { tags: rows });
   });
 
-  app.get("/main/cards", async (req, res) => {
-    const sql = bindSQL("main/cards");
-    const [rows, fields] = await select(sql);
-    res.render("components/card-layout", { datas: rows });
-  });
+  app.post("/main/cards", async (req, res) => {
+    const { tagId } = req.body;
+    const tagIds: string[] = tagId ? Array.from(tagId) : [];
 
-  app.get("/cards/:tagId", async (req, res) => {
-    const { tagId } = req.params;
-    const tagIds: Set<string> = app.locals.tagIds;
-
-    tagIds.has(tagId) ? tagIds.delete(tagId) : tagIds.add(tagId);
-
-    const sqlId = tagIds.size > 0 ? "main/cards/tagId" : "main/cards";
-
-    const sql = bindSQL(sqlId, { tagIds: Array.from(tagIds) });
+    const sql = bindSQL("main/cards", { tagIds });
     const [rows, fields] = await select(sql);
     res.render("components/card-layout", { datas: rows });
   });

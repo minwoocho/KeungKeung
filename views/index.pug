@@ -7,6 +7,7 @@ block top
       img(src='/assets/icon/add.png', style='width:1.65rem;height:1.65rem')
       p 가게 추가하기
 block body
-  div(hx-get="/main/tags" hx-trigger="load" hx-target="form.tag-layout.main")
-  form.tag-layout.main(hx-post="/testss" hx-trigger="click" hx-swap="none")
-  #card-list-layout(hx-get="/main/cards" hx-trigger="load")
+  //- div(hx-get="/main/tags" hx-trigger="load" hx-target="form.tag-layout.main")
+  //- form.tag-layout.main(hx-post="/testss" hx-trigger="from:input" hx-swap="none")
+  form.tag-layout.main(hx-get="/main/tags" hx-trigger="load" hx-target="form.tag-layout.main")
+  #card-list-layout(hx-post="/main/cards" hx-trigger="load")
