@@ -1,33 +1,42 @@
+import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import mysql, { RowDataPacket, FieldPacket, ResultSetHeader } from "mysql2/promise"; // mysql 모듈을 불러옵니다.
+import * as expressSession from "express-session";
+import session from "express-session";
+import MySQLStore from "express-mysql-session";
 import mybatisMapprer, { Params } from "mybatis-mapper";
 import bodyParser from "body-parser";
 import multer from "multer";
-import session from "express-session";
-// import MySQLStore from "express-mysql-session";
-import MySQLStore from "express-mysql-session";
-// MySQLStore(session);
-// const options = {
-//   host: "localhost",
-//   port: 3306,
-//   user: "",
-//   password: "",
-//   database: "",
-// };
-// const sessionStore = MySQLStore(session);
 
-require("dotenv").config();
+declare module "express-session" {
+  export interface SessionData {
+    is_logined?: boolean;
+    dispayName?: string;
+    userId?: string;
+  }
+}
+
+const options = {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  port: 3306,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+};
+
+const mysqlstore = MySQLStore(expressSession);
+const sessionStore = new mysqlstore(options);
 
 const app = express();
 
-// app.use(
-//   session({
-//     secret: "asdfasffdas",
-//     resave: false,
-//     saveUninitialized: true,
-//     store: sessionStore,
-//   }),
-// );
+app.use(
+  session({
+    secret: "asdfasffdas",
+    resave: false,
+    saveUninitialized: true,
+    store: sessionStore,
+  }),
+);
 
 const port = 3001;
 
@@ -41,7 +50,8 @@ const mockUserId = "00002";
 const loggingLevel = Number.parseInt(process.env.LOGGING_LEVEL || "0");
 
 const sessionHandler = (req: Request, res: Response, next: NextFunction) => {
-  app.locals.userId = mockUserId;
+  loggingLevel >= 3 && console.log(req.session);
+  req.session.resetMaxAge();
   next();
 };
 
@@ -124,17 +134,29 @@ const start = async () => {
   /**
    * 메인페이지
    */
+  app.post("/login", async (req, res) => {
+    // const { userId } = req.body;
+    const userId = mockUserId;
+
+    const sql = bindSQL("main/user", { userId });
+    const [rows, fields] = await select(sql);
+
+    req.session.userId = userId;
+    req.session.dispayName = rows[0].name;
+    req.session.is_logined = true;
+
+    loggingLevel >= 2 && console.log("login User : " + req.session.userId);
+    res.render("index");
+  });
+
   app.get("/", (req, res) => {
-    app.locals.tagIds = new Set();
-    loggingLevel >= 2 && console.log("login User : " + app.locals.userId);
     res.render("index");
   });
 
   app.get("/main/user", async (req, res) => {
-    const userId = app.locals.userId;
-    const sql = bindSQL("main/user", { userId });
-    const [rows, fields] = await select(sql);
-    res.send(rows[0].name + "님! 어떤 식당을 찾으시나요?");
+    if (!req.session.is_logined)
+      res.send("<div hx-post='/login' hx-target='body'>로그인 해 주세용~~~</div>");
+    else res.send(req.session.dispayName + "님! 어떤 식당을 찾으시나요?");
   });
 
   app.get("/main/tags", async (req, res) => {
@@ -179,7 +201,7 @@ const start = async () => {
   });
 
   app.get("/card/tags/:id", async (req, res) => {
-    const userId = app.locals.userId;
+    const userId = req.session.userId || "";
     const { id } = req.params;
     const sql = bindSQL("card/tags/id", { id, userId });
     const [rows, fields] = await select(sql);
@@ -187,7 +209,8 @@ const start = async () => {
   });
 
   app.put("/like", async (req, res) => {
-    const userId = app.locals.userId;
+    if (!req.session.is_logined) res.send();
+    const userId = req.session.userId || "";
     const { reviewId, tagId } = req.body;
     const sql = bindSQL("like", { userId, reviewId, tagId });
     const [result] = await insert(sql);
@@ -195,7 +218,8 @@ const start = async () => {
   });
 
   app.delete("/unlike", async (req, res) => {
-    const userId = app.locals.userId;
+    if (!req.session.is_logined) res.send();
+    const userId = req.session.userId || "";
     const { reviewId, tagId } = req.body;
     const sql = bindSQL("unlike", { userId, reviewId, tagId });
     const [result] = await remove(sql);
@@ -206,7 +230,6 @@ const start = async () => {
    * 리뷰등록 페이지
    */
   app.get("/add-review", (req, res) => {
-    app.locals.addTagIds = new Set();
     res.render("add-review");
   });
 
@@ -217,8 +240,9 @@ const start = async () => {
   });
 
   app.post("/add/review", async (req, res, next) => {
-    // const userId = app.locals.userId;
-    const userId = mockUserId;
+    if (!req.session.is_logined) res.send();
+    const userId = req.session.userId;
+    // const userId = mockUserId;
     const { storeName, tagIds, reviewContent } = req.body;
     const files = req.files as Express.Multer.File[];
 
@@ -266,10 +290,6 @@ const start = async () => {
       connection.rollback();
       next(e);
     }
-  });
-  app.post("/testss", async (req, res, next) => {
-    console.log(req.body);
-    res.end();
   });
 };
 

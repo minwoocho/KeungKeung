@@ -66,13 +66,13 @@ const handleOnClickMainTag = (e: HTMLInputElement) => {
   // TODO: 지지님 이 위치에 스크롤 맨 위로 갈 수 있는 함수 하나만 넣어주세요....
   // e.set("checked");
   // console.log(e);
-  if (e) {
-    if (e.className.length <= 8) {
-      e.className = e.className + " selected";
-    } else {
-      e.className = e.className.slice(0, 8);
-    }
-  }
+  // if (e) {
+  //   if (e.className.length <= 8) {
+  //     e.className = e.className + " selected";
+  //   } else {
+  //     e.className = e.className.slice(0, 8);
+  //   }
+  // }
 };
 
 /**
