@@ -1,4 +1,4 @@
-.selected p {
+.selected {
   color: #ffffff !important;
 }
 
@@ -13,11 +13,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
   &.selected {
     background-color: #8c8c8c !important;
   }
 
-  font-family: "Noto Sans Tamil UI";
+  // 폰트 구역
+  font-family: 'Noto Sans Tamil UI';
   font-style: normal;
   font-weight: 400;
   font-size: 1.85rem;
@@ -35,8 +37,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
 
-  font-family: "Noto Sans Tamil UI";
+  // 폰트 구역
+  font-family: 'Noto Sans Tamil UI';
   font-style: normal;
   font-weight: 400;
   font-size: 1.65rem;
@@ -58,8 +62,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
 
-  font-family: "Noto Sans Tamil UI";
+  // 폰트 구역
+  font-family: 'Noto Sans Tamil UI';
   font-style: normal;
   font-weight: 400;
   font-size: 1.65rem;

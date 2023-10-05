@@ -17,8 +17,9 @@ block body
       //- input.form-input-text(type="text", name="tst", placeholder="전화번호")
       //- input.form-input-text(type="text", name="tst", placeholder="주소")
       //- input.form-input-text(type="text", name="tst", placeholder="네이버지도 url을 입력해주세요") 
-      input.form-input-text#tagIds(type="text", name="tagIds" placeholder="태그를 선택해주세요" readonly)
-      .tag-layout.card
+      input.form-input-text#tagIds(type="text", name="tagIds" placeholder="태그를 선택해주세요" readonly hidden)
+      p#input-tag-p #태그를 선택해주세요
+      .tag-layout.card#add-tag-list
       textarea.form-input.textarea(name='reviewContent' placeholder="리뷰를 입력해주세요")
       .save-button-section 
         button.save-button(type="submit") 저장
