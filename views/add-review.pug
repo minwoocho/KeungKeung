@@ -7,17 +7,11 @@ block top
       p 새로운 가게 등록하기
 block body
   #add-review-layout(hx-get="/add/tagList" hx-trigger="load" hx-swap="innerHTML" hx-target=".tag-layout.card")
-    
     form.add-picture#image-container(enctype = "multipart/form-data" name="imgs")
       input.img#img-upload(type="file" name="img" multiple accept="image/*" onChange="loadFile(this)")
       span#add-picture-button(onclick="handleAddPictureButton()")  
         img(src='assets/icon/add.png' style="width:2rem;height:2rem;margin-right:10px")
         p 사진 추가하기
-      //- .new-image pic1
-      //- .new-image pic2 
-      //- .new-image pic3 
-      //- .new-image pic4 
-      //- .new-image pic5
     form.review-form(hx-post="/add/review" hx-include="form.add-picture" hx-on::after-request="alert('저장되었습니다.'); location.href = '/';" hx-swap="none" enctype = "multipart/form-data")
       input.form-input-text(type="text" name="storeName" placeholder="가게명을 입력해주세요")
       //- input.form-input-text(type="text", name="tst", placeholder="전화번호")
