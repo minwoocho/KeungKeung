@@ -1,31 +1,77 @@
+import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import mysql, { RowDataPacket, FieldPacket, ResultSetHeader } from "mysql2/promise"; // mysql 모듈을 불러옵니다.
+import * as expressSession from "express-session";
+import session from "express-session";
+import MySQLStore from "express-mysql-session";
 import mybatisMapprer, { Params } from "mybatis-mapper";
 import bodyParser from "body-parser";
 import multer from "multer";
 
-require("dotenv").config();
+declare module "express-session" {
+  export interface SessionData {
+    is_logined?: boolean;
+    dispayName?: string;
+    userId?: string;
+  }
+}
+
+const options = {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  port: 3306,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+};
+
+const mysqlstore = MySQLStore(expressSession);
+const sessionStore = new mysqlstore(options);
 
 const app = express();
-app.set("view engine", "pug");
 
-const port = 3000;
-const logging: false | "debug" | "info" | "error" = false;
+app.use(
+  session({
+    secret: "asdfasffdas",
+    resave: false,
+    saveUninitialized: true,
+    store: sessionStore,
+  }),
+);
+
+const port = 3001;
 
 const mockUserId = "00002";
 
-const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error("에러 발생:", err);
-  res.status(500).send("서버 에러 발생");
-  next(err);
+// # logging level
+// # debug: 3
+// # info: 2
+// # error: 1
+// # none: 0
+const loggingLevel = Number.parseInt(process.env.LOGGING_LEVEL || "0");
+
+const sessionHandler = (req: Request, res: Response, next: NextFunction) => {
+  loggingLevel >= 3 && console.log(req.session);
+  req.session.resetMaxAge();
+  next();
 };
 
-app.use(errorHandler);
+function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+  console.error("errorHandler Executed!");
+  loggingLevel >= 1 && console.error("에러 발생: ", err);
+  res.status(500).send({ message: "서버 에러 발생" });
+  next(err);
+}
+
+app.set("view engine", "pug");
+
 app.use(express.static("public"));
 app.use(express.static("src"));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(multer({ storage: multer.memoryStorage() }).array("img"));
+
+app.use(sessionHandler);
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -35,58 +81,51 @@ const pool = mysql.createPool({
   connectionLimit: 35,
 });
 
+const getConnection = async () => {
+  console.log("Connection Connected!");
+  const connection = await pool.getConnection();
+
+  return {
+    connection,
+    [Symbol.asyncDispose]: async () => {
+      console.log("Connection Released!");
+      connection.release();
+    },
+  };
+};
+
 const start = async () => {
   // 마이바티스 매퍼 정의
   mybatisMapprer.createMapper(["src/sql/mapper.xml"]);
 
   const bindSQL = (id: string, param?: Params) => {
-    console.log(id);
+    loggingLevel >= 2 && console.log(id, JSON.stringify(param));
     return mybatisMapprer.getStatement("app", id, param, {
       language: "sql",
       indent: "  ",
     });
   };
 
-  // 커넥션을 정의합니다.
-  // const connection = await mysql.createConnection({
-  //   host: process.env.DB_HOST,
-  //   user: process.env.DB_USER,
-  //   password: process.env.DB_PASSWORD,
-  //   database: process.env.DB_DATABASE,
-  //   connectionLimit: 30,
-  // });
-
-  const getConnection = async () => {
-    const connection = await pool.getConnection();
-
-    return {
-      connection,
-      [Symbol.asyncDispose]: async () => {
-        console.log("Release Connsetion!");
-        connection.release();
-      },
-    };
-  };
-
   const { connection } = await getConnection();
 
-  const select = async (sql: string, val?: string) => {
-    logging && console.log(sql);
-    return connection.query(sql, val) as Promise<[RowDataPacket[], FieldPacket[]]>;
+  const select = (sql: string, val?: string) => {
+    loggingLevel >= 3 && console.log(sql);
+    return connection.execute(sql, val) as Promise<[RowDataPacket[], FieldPacket[]]>;
   };
 
   const insert = (sql: string, val?: any) => {
-    logging && console.log(sql);
-    return connection.query(sql, val) as Promise<[ResultSetHeader, FieldPacket[]]>;
+    loggingLevel >= 3 && console.log(sql);
+    return connection.execute(sql, val) as Promise<[ResultSetHeader, FieldPacket[]]>;
   };
 
   const remove = (sql: string, val?: string) => {
-    logging && console.log(sql);
-    return connection.query(sql, val) as Promise<[ResultSetHeader, FieldPacket[]]>;
+    loggingLevel >= 3 && console.log(sql);
+    return connection.execute(sql, val) as Promise<[ResultSetHeader, FieldPacket[]]>;
   };
 
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
+    console.log(`Logging level: ${loggingLevel}`);
     console.log(`*===============================*`);
     console.log(`==         Keung Keung         ==`);
     console.log(`*===============================*`);
@@ -95,18 +134,29 @@ const start = async () => {
   /**
    * 메인페이지
    */
+  app.post("/login", async (req, res) => {
+    // const { userId } = req.body;
+    const userId = mockUserId;
+
+    const sql = bindSQL("main/user", { userId });
+    const [rows, fields] = await select(sql);
+
+    req.session.userId = userId;
+    req.session.dispayName = rows[0].name;
+    req.session.is_logined = true;
+
+    loggingLevel >= 2 && console.log("login User : " + req.session.userId);
+    res.render("index");
+  });
+
   app.get("/", (req, res) => {
-    app.locals.userId = mockUserId;
-    app.locals.tagIds = new Set();
-    console.log("login User : " + app.locals.userId);
     res.render("index");
   });
 
   app.get("/main/user", async (req, res) => {
-    const userId = app.locals.userId;
-    const sql = bindSQL("main/user", { userId });
-    const [rows, fields] = await select(sql);
-    res.send(rows[0].name + "님! 어떤 식당을 찾으시나요?");
+    if (!req.session.is_logined)
+      res.send("<div hx-post='/login' hx-target='body'>로그인 해 주세용~~~</div>");
+    else res.send(req.session.dispayName + "님! 어떤 식당을 찾으시나요?");
   });
 
   app.get("/main/tags", async (req, res) => {
@@ -115,21 +165,11 @@ const start = async () => {
     res.render("components/tag-select", { tags: rows });
   });
 
-  app.get("/main/cards", async (req, res) => {
-    const sql = bindSQL("main/cards");
-    const [rows, fields] = await select(sql);
-    res.render("components/card-layout", { datas: rows });
-  });
+  app.post("/main/cards", async (req, res) => {
+    const { tagId } = req.body;
+    const tagIds: string[] = tagId ? Array.from(tagId) : [];
 
-  app.get("/cards/:tagId", async (req, res) => {
-    const { tagId } = req.params;
-    const tagIds: Set<string> = app.locals.tagIds;
-
-    tagIds.has(tagId) ? tagIds.delete(tagId) : tagIds.add(tagId);
-
-    const sqlId = tagIds.size > 0 ? "main/cards/tagId" : "main/cards";
-
-    const sql = bindSQL(sqlId, { tagIds: Array.from(tagIds) });
+    const sql = bindSQL("main/cards", { tagIds });
     const [rows, fields] = await select(sql);
     res.render("components/card-layout", { datas: rows });
   });
@@ -147,7 +187,7 @@ const start = async () => {
     const [rows, fields] = await select(sql);
 
     if (rows.length === 0) {
-      console.error("Image not found");
+      loggingLevel >= 1 && console.error("Image not found");
       res.status(404).send("Image not found");
       return;
     }
@@ -161,7 +201,7 @@ const start = async () => {
   });
 
   app.get("/card/tags/:id", async (req, res) => {
-    const userId = app.locals.userId;
+    const userId = req.session.userId || "";
     const { id } = req.params;
     const sql = bindSQL("card/tags/id", { id, userId });
     const [rows, fields] = await select(sql);
@@ -169,7 +209,8 @@ const start = async () => {
   });
 
   app.put("/like", async (req, res) => {
-    const userId = app.locals.userId;
+    if (!req.session.is_logined) res.send();
+    const userId = req.session.userId || "";
     const { reviewId, tagId } = req.body;
     const sql = bindSQL("like", { userId, reviewId, tagId });
     const [result] = await insert(sql);
@@ -177,7 +218,8 @@ const start = async () => {
   });
 
   app.delete("/unlike", async (req, res) => {
-    const userId = app.locals.userId;
+    if (!req.session.is_logined) res.send();
+    const userId = req.session.userId || "";
     const { reviewId, tagId } = req.body;
     const sql = bindSQL("unlike", { userId, reviewId, tagId });
     const [result] = await remove(sql);
@@ -188,55 +230,41 @@ const start = async () => {
    * 리뷰등록 페이지
    */
   app.get("/add-review", (req, res) => {
-    app.locals.userId = mockUserId;
-    app.locals.addTagIds = new Set();
     res.render("add-review");
   });
 
-  app.get("/add/tagList", async (req, res) => {
+  app.get("/add/tagList", async (req, res, next) => {
     const sql = bindSQL("add/tagList");
     const [rows, fields] = await select(sql);
     res.render("components/tag-select", { tags: rows });
   });
 
   app.post("/add/review", async (req, res, next) => {
-    console.log(0);
-    const userId = mockUserId;
+    if (!req.session.is_logined) res.send();
+    const userId = req.session.userId;
+    // const userId = mockUserId;
     const { storeName, tagIds, reviewContent } = req.body;
     const files = req.files as Express.Multer.File[];
-    const images = files.map((item) => item.buffer.toString("base64"));
 
-    console.log("==================inserted data==================");
-    console.log(JSON.stringify(req.body));
-    console.log(files);
-    console.log("==================inserted data==================");
-
-    if (!userId) {
-      res.send("세션정보가 없습니다.");
-      console.log("session expired");
-      return;
-    }
-
-    console.log(1);
-    await connection.beginTransaction();
+    loggingLevel >= 2 && console.log("==================inserted data==================");
+    loggingLevel >= 2 && console.log(JSON.stringify(req.body));
+    loggingLevel >= 2 && console.log(files);
+    loggingLevel >= 2 && console.log("==================inserted data==================");
 
     try {
-      console.log(2);
+      if (!userId) throw new Error("세션정보가 없습니다.");
+
+      await connection.beginTransaction();
+
       const sql1 = bindSQL("add/review/store", { storeName });
       const [result1] = await insert(sql1);
       const storeId = result1.insertId;
-      console.log(3);
 
       const sql2 = bindSQL("add/review", { storeId, userId, reviewContent });
       const [result2] = await insert(sql2);
       const reviewId = result2.insertId;
-      console.log(4);
 
       const sql3 = bindSQL("add/review/tag", { reviewId, tagIds: tagIds.split(",") });
-      console.log(sql3);
-
-      console.log(5);
-      console.log(files);
 
       const insertImages = files.map((file, index) => {
         const image = file.buffer;
@@ -248,28 +276,17 @@ const start = async () => {
           mimetype,
           originalname,
         });
-        console.log(15, {
-          reviewId,
-          index,
-          mimetype,
-          originalname,
-        });
         return insert(sql4, [image]);
       });
-      console.log(6);
 
       await insert(sql3);
-      console.log(7);
 
       await Promise.all([...insertImages]);
-      console.log(8);
 
       connection.commit();
-      console.log(9);
-      res.send("/");
-      // res.render("/");
+      res.end();
     } catch (e) {
-      console.error("ROLLBACK!!!\npost./add/review\nROLLBACK!!!");
+      console.log(next);
       connection.rollback();
       next(e);
     }

@@ -61,16 +61,18 @@ const handleTagLayoutScroll = (id: string) => {
  * @returns: None
  * @description : search review when the main tag is clicked
  */
-const handleOnClickMainTag = (e: HTMLDivElement) => {
+const handleOnClickMainTag = (e: HTMLInputElement) => {
   // window.scrollTo(0, 0);
   // TODO: 지지님 이 위치에 스크롤 맨 위로 갈 수 있는 함수 하나만 넣어주세요....
-  if (e) {
-    if (e.className.length <= 8) {
-      e.className = e.className + " selected";
-    } else {
-      e.className = e.className.slice(0, 8);
-    }
-  }
+  // e.set("checked");
+  // console.log(e);
+  // if (e) {
+  //   if (e.className.length <= 8) {
+  //     e.className = e.className + " selected";
+  //   } else {
+  //     e.className = e.className.slice(0, 8);
+  //   }
+  // }
 };
 
 /**
