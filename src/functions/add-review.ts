@@ -17,12 +17,33 @@ const handleAddTag = (e: Event) => {
 };
 
 const loadFile = (input: any) => {
-  const file = input.files[0];
-
-  const newImage = document.createElement("img");
-  newImage.setAttribute("class", "new-image");
-  newImage.src = URL.createObjectURL(file);
+  if (input.files.length > 9) {
+    alert("사진은 최대 9장까지 첨부 가능합니다.");
+    return;
+  }
 
   const imageContainer = document.getElementById("image-container");
-  imageContainer?.appendChild(newImage);
+
+  const addPictureBtn = document.getElementById("add-picture-button");
+  if (addPictureBtn) addPictureBtn.style.display = "none";
+  if (input.files) {
+    for (let i = 0; i < input.files.length; i++) {
+      const img = document.createElement("img");
+      img.style.height = "100%";
+      img.style.width = "100%";
+      img.style.objectFit = "contain";
+
+      img.src = URL.createObjectURL(input.files[i]);
+      const newImage = document.createElement("div");
+      newImage.setAttribute("class", "new-image");
+      newImage.appendChild(img);
+
+      imageContainer?.appendChild(newImage);
+    }
+  }
+};
+
+const handleAddPictureButton = () => {
+  const originalInput = document.getElementById("img-upload");
+  originalInput?.click();
 };
