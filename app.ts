@@ -124,11 +124,6 @@ const start = async () => {
   };
 
   app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-    console.log(`Logging level: ${loggingLevel}`);
-    console.log(`*===============================*`);
-    console.log(`==         Keung Keung         ==`);
-    console.log(`*===============================*`);
     console.log(
       " __  __                                          __  __                                         ",
     );
@@ -156,6 +151,8 @@ const start = async () => {
     console.log(
       "                                         \\_/__/                                          \\_/__/ ",
     );
+    console.log(`Server is running on port ${port}`);
+    console.log(`Logging level: ${loggingLevel}`);
   });
 
   /**
