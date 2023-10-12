@@ -7,7 +7,7 @@ const handleImageSlide = (reviewId: string, nextOrPrev: number) => {
   console.log(imageLength);
   for (let i = 0; i < imageLength; i++) {
     const currentSlide = currentImageSlider.getElementsByClassName("slide")[i] as HTMLDivElement;
-    if (currentSlide.style.display == "block") {
+    if (currentSlide.style.display == "flex") {
       current = i;
       currentSlide.style.marginLeft = "100%";
       currentSlide.style.display = "none";
@@ -20,5 +20,5 @@ const handleImageSlide = (reviewId: string, nextOrPrev: number) => {
   else if (next < 0) next = imageLength - 1;
 
   const nextSlide = currentImageSlider.getElementsByClassName("slide")[next] as HTMLDivElement;
-  nextSlide.style.display = "block";
+  nextSlide.style.display = "flex";
 };

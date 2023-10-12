@@ -14,7 +14,7 @@ mixin imglist (seq)
         a.next(onclick=`handleImageSlide(${data.reviewId}, 1)`) &#10095;
         while seq < data.imageCount
             - var first = seq == 0
-            .slide.fade(style=first ? 'display: block' : 'display: none')
+            .slide.fade(style=first ? 'display: flex' : 'display: none')
                 .numbertext #{seq + 1} / #{data.imageCount}
                 +imglist(seq++)
         
