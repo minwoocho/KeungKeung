@@ -1,26 +1,44 @@
 mixin imglist (seq)
   img(src=`/card/images/${data.reviewId}/${seq}`)
 
-.card-container(id=data.reviewId)
-    .card-header 
+.gigi-card-container(id=data.reviewId)
+    .gigi-card-header 
         .card-profile 
             img(src='/assets/icon/pig-profile.png', style='width:60px')
             p #{data.userName}
         .card-store
             p #{data.storeName}
     - var seq = 0;
-    .image-slider(id=`img-${data.reviewId}`)
+    //- #carouselExampleIndicators.carousel.slide(data-ride="carousel")
+    //-     .carousel-inner
+    //-     while seq < data.imageCount 
+    //-         - var first = seq == 0
+    //-         .carousel-item(class=first ? 'active': '')
+    //-             +imglist(seq++)
+    //-     a.carousel-control-prev(href="#carouselExampleContrls" role="button" data-slide="prev")
+    //-         span.carousel-control-prev-icon(aria-hidden="true")
+    //-         span.sr-only Previous 
+    //-     a.carousel-control-next(href="#carouselExampleContrls" role="button" data-slide="next")
+    //-         span.carousel-control-next-icon(aria-hidden="true")
+    //-         span.sr-only Next 
+        
+    .gigi-image-slider(id=`img-${data.reviewId}`)
         a.prev(onclick=`handleImageSlide(${data.reviewId}, -1)`) &#10094;
         a.next(onclick=`handleImageSlide(${data.reviewId}, 1)`) &#10095;
         while seq < data.imageCount
             - var first = seq == 0
-            .slide.fade(style=first ? 'display: flex' : 'display: none')
-                .numbertext #{seq + 1} / #{data.imageCount}
+            .gigi-slide.gigi-fade(style=first ? 'display: flex' : 'display: none')
+                .gigi-numbertext #{seq + 1} / #{data.imageCount}
                 +imglist(seq++)
         
     .tag-layout(hx-get="/card/tags/"+data.reviewId hx-trigger="load" hx-swap="innerHTML")
     .card-review 
         p #{data.review}
     .card-reply 
-        p 댓글 15개
+        p(data-bs-toggle="modal" data-bs-target="#staticBackdrop") 댓글 15개
+
+
+
+
+
         
