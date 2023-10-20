@@ -1,0 +1,21 @@
+.modal.show#staticBackdrop(data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true")
+    .modal-dialog(class = animation && "slide-up" )
+        .modal-content 
+            .modal-header 
+                h1.modal-title 댓글
+                button.btn-close(onclick="handleCloseModal()" type="button")
+            .modal-body
+                ol.list-group 
+                    each reply in data 
+                        li.list-group-item.d-flex.justify-content-between-align-items-start 
+                            img.review-profile-img(src='/assets/icon/pig-profile.png')
+                            .ms-2.me-auto 
+                                .fw-bold #{reply.userId}
+                                span #{reply.replyContent}
+                            .button(hx-delete=`/delete/reply/${reviewId}/${reply.replyId}` hx-trigger='click' type="button" reply.userId != userId && hidden)
+                                img(src="assets/icon/trash.svg" style="width:40px;height:40px")
+                form.add-reply-section(hx-post="/add/reply")
+                    input.form-control(name="replyContent" required)
+                    input(name="reviewId" type="hidden" value=reviewId)
+                    button.send-button(type="submit") 
+                        img(src="assets/icon/send.svg" style="width:40px;height:40px")

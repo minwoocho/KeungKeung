@@ -3,10 +3,12 @@ const handleImageSlide = (reviewId: string, nextOrPrev: number) => {
   if (!currentImageSlider) return;
 
   let current = 0;
-  const imageLength = currentImageSlider.getElementsByClassName("slide").length;
+  const imageLength = currentImageSlider.getElementsByClassName("gigi-slide").length;
   console.log(imageLength);
   for (let i = 0; i < imageLength; i++) {
-    const currentSlide = currentImageSlider.getElementsByClassName("slide")[i] as HTMLDivElement;
+    const currentSlide = currentImageSlider.getElementsByClassName("gigi-slide")[
+      i
+    ] as HTMLDivElement;
     if (currentSlide.style.display == "flex") {
       current = i;
       currentSlide.style.marginLeft = "100%";
@@ -19,6 +21,6 @@ const handleImageSlide = (reviewId: string, nextOrPrev: number) => {
   if (next >= imageLength) next = 0;
   else if (next < 0) next = imageLength - 1;
 
-  const nextSlide = currentImageSlider.getElementsByClassName("slide")[next] as HTMLDivElement;
+  const nextSlide = currentImageSlider.getElementsByClassName("gigi-slide")[next] as HTMLDivElement;
   nextSlide.style.display = "flex";
 };

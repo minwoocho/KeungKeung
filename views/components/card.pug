@@ -1,26 +1,33 @@
 mixin imglist (seq)
   img(src=`/card/images/${data.reviewId}/${seq}`)
 
-.card-container(id=data.reviewId)
-    .card-header 
+.gigi-card-container(id=data.reviewId)
+    .gigi-card-header 
         .card-profile 
             img(src='/assets/icon/pig-profile.png', style='width:60px')
             p #{data.userName}
         .card-store
             p #{data.storeName}
     - var seq = 0;
-    .image-slider(id=`img-${data.reviewId}`)
+    .gigi-image-slider(id=`img-${data.reviewId}`)
         a.prev(onclick=`handleImageSlide(${data.reviewId}, -1)`) &#10094;
         a.next(onclick=`handleImageSlide(${data.reviewId}, 1)`) &#10095;
         while seq < data.imageCount
             - var first = seq == 0
-            .slide.fade(style=first ? 'display: flex' : 'display: none')
-                .numbertext #{seq + 1} / #{data.imageCount}
+            .gigi-slide.gigi-fade(style=first ? 'display: flex' : 'display: none')
+                .gigi-numbertext #{seq + 1} / #{data.imageCount}
                 +imglist(seq++)
         
     .tag-layout(hx-get="/card/tags/"+data.reviewId hx-trigger="load" hx-swap="innerHTML")
     .card-review 
         p #{data.review}
     .card-reply 
-        p 댓글 15개
+        p(hx-get="/card/replies/"+data.reviewId hx-trigger="click" hx-target="#reply-modal-target") 댓글 #{data.replyCount}개
+    #reply-modal-target
+    
+
+
+
+
+
         
