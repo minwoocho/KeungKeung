@@ -46,10 +46,12 @@
           ,TSM.STORE_NAME as storeName
           ,TUM.NAME as userName
           ,(SELECT COUNT(*) FROM TB_IMAGE_MASTER TIM WHERE TRM.REVIEW_ID  = TIM.REVIEW_ID) AS imageCount
+          ,(SELECT COUNT(*) FROM TB_REPLY_MASTER TRPM WHERE TRM.REVIEW_ID = TRPM.REVIEW_ID ) AS replyCount
       FROM TB_REVIEW_MASTER TRM 
       LEFT OUTER JOIN TB_STORE_MASTER TSM ON TRM.STORE_ID  = TSM.STORE_ID  
       LEFT OUTER JOIN TB_IMAGE_MASTER TIM  ON TRM.REVIEW_ID  = TIM.REVIEW_ID
       LEFT OUTER JOIN TB_USER_MASTER TUM ON TRM.USER_ID  = TUM.USER_ID
+      LEFT OUTER JOIN TB_REPLY_MASTER TRPM ON TRM.REVIEW_ID = TRPM.REVIEW_ID
      WHERE 1=1
        AND TRM.REVIEW_ID = #{id}
   </select>
@@ -77,6 +79,26 @@
       LEFT OUTER JOIN TB_TAG_MASTER TTM ON TRT.TAG_ID = TTM.TAG_ID 
      WHERE TRT.REVIEW_ID = #{id}
   </select>
+
+  <select id="card/replies/id">
+    SELECT USER_ID as userId
+          ,REPLY_CONTENT as replyContent
+          ,REVIEW_ID as reviewId
+          ,REPLY_ID as replyId
+      FROM TB_REPLY_MASTER
+     WHERE REVIEW_ID = #{id}
+     ORDER BY DATA_INS_DATE DESC
+  </select>
+
+  <insert id="add/replies">
+    INSERT INTO TB_REPLY_MASTER(REVIEW_ID,USER_ID,REPLY_CONTENT)
+    VALUES (#{reviewId},#{userId},#{replyContent})
+  </insert>
+
+  <delete id="remove/reply">
+    DELETE FROM TB_REPLY_MASTER
+     WHERE REPLY_ID = #{replyId}
+  </delete>
 
   <insert id="like">
     INSERT INTO TB_USER_REVIEW_TAG(REVIEW_ID,USER_ID,TAG_ID)
