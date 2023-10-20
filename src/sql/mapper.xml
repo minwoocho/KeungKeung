@@ -78,6 +78,20 @@
      WHERE TRT.REVIEW_ID = #{id}
   </select>
 
+  <select id="card/replies/id">
+    SELECT USER_ID as userId
+          ,REPLY_CONTENT as replyContent
+          ,REVIEW_ID as reviewId
+      FROM TB_REPLY_MASTER
+     WHERE REVIEW_ID = #{id}
+     ORDER BY DATA_INS_DATE DESC
+  </select>
+
+  <insert id="add/replies">
+    INSERT INTO TB_REPLY_MASTER(REVIEW_ID,USER_ID,REPLY_CONTENT)
+    VALUES (#{reviewId},#{userId},#{replyContent})
+  </insert>
+
   <insert id="like">
     INSERT INTO TB_USER_REVIEW_TAG(REVIEW_ID,USER_ID,TAG_ID)
     VALUES (#{reviewId},#{userId},#{tagId})

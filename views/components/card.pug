@@ -9,19 +9,6 @@ mixin imglist (seq)
         .card-store
             p #{data.storeName}
     - var seq = 0;
-    //- #carouselExampleIndicators.carousel.slide(data-ride="carousel")
-    //-     .carousel-inner
-    //-     while seq < data.imageCount 
-    //-         - var first = seq == 0
-    //-         .carousel-item(class=first ? 'active': '')
-    //-             +imglist(seq++)
-    //-     a.carousel-control-prev(href="#carouselExampleContrls" role="button" data-slide="prev")
-    //-         span.carousel-control-prev-icon(aria-hidden="true")
-    //-         span.sr-only Previous 
-    //-     a.carousel-control-next(href="#carouselExampleContrls" role="button" data-slide="next")
-    //-         span.carousel-control-next-icon(aria-hidden="true")
-    //-         span.sr-only Next 
-        
     .gigi-image-slider(id=`img-${data.reviewId}`)
         a.prev(onclick=`handleImageSlide(${data.reviewId}, -1)`) &#10094;
         a.next(onclick=`handleImageSlide(${data.reviewId}, 1)`) &#10095;
@@ -35,7 +22,9 @@ mixin imglist (seq)
     .card-review 
         p #{data.review}
     .card-reply 
-        p(data-bs-toggle="modal" data-bs-target="#staticBackdrop") 댓글 15개
+        p(hx-get="/card/replies/"+data.reviewId hx-trigger="click" hx-target="#reply-modal-target") 댓글 15개
+    #reply-modal-target
+    
 
 
 

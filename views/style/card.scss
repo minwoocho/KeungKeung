@@ -170,34 +170,51 @@
 
 /* 댓글 모달 */
 .modal {
+  $modal-fade-transform: none;
+  $modal-show-transform: none;
+  $modal-transition: transform none;
+  $modal-scale-transform: none;
   &.show {
     display: flex !important;
     align-items: flex-end;
     justify-content: center;
+    .modal-dialog {
+      display: flex;
+      margin: 0;
+      width: 100%;
+      max-width: none;
+      justify-content: center;
+      &.slide-up {
+        animation: slideInUp;
+        animation-duration: 0.5s;
+      }
+    }
   }
-  .modal-dialog {
-    display: flex;
-    margin: 0;
-    width: 100%;
-    max-width: none;
-    justify-content: center;
-  }
+
   .modal-content {
-    height: 170vw;
+    height: 150vw;
     width: 95vw;
     border-radius: 25px 25px 0 0;
     #modal-close-button {
       font-size: 50px !important;
     }
-    .list-group {
-      height: 80%;
-      overflow-y: scroll;
+    .modal-title {
+      margin-left: 30px;
     }
-    .d-flex {
-      height: 135px;
-      min-height: 135px;
-      font-size: 1.75rem;
-      align-items: center;
+    .modal-body {
+      padding: 0;
+    }
+    .list-group {
+      height: 90%;
+      overflow-y: scroll;
+
+      .d-flex {
+        height: 135px;
+        min-height: 135px;
+        font-size: 1.75rem;
+        align-items: center;
+        padding: 2rem;
+      }
     }
     .review-profile-img {
       width: 70px;
@@ -205,8 +222,34 @@
       margin-right: 15px;
     }
     .add-reply-section {
-      height: 20%;
-      background-color: beige;
+      height: 10%;
+      min-height: 100px;
+      border-top: 1px solid lightgray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .form-control {
+        width: 85%;
+        height: 90px;
+        border-radius: 50px;
+        font-size: 1.85rem;
+        padding: 30px;
+        &:focus {
+          border: solid 3px rgb(251, 158, 45);
+          box-shadow: none;
+        }
+      }
+      .send-button {
+        width: 85px;
+        height: 85px;
+        margin-left: 20px;
+        border-radius: 85px;
+        background-color: rgb(251, 158, 45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+      }
     }
   }
   .btn-close {

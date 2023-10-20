@@ -232,6 +232,26 @@ const start = async () => {
     res.render("components/tag-select", { tags: rows });
   });
 
+  app.get("/card/replies/:id", async (req, res) => {
+    const { id } = req.params;
+    const sql = bindSQL("card/replies/id", { id });
+    const [rows, fields] = await select(sql);
+    res.render("components/reply-modal", { data: rows, reviewId: id, animation: true });
+  });
+
+  app.post("/add/reply", async (req, res, next) => {
+    const userId = req.session.userId;
+
+    const { reviewId, replyContent } = req.body;
+    const sql = bindSQL("add/replies", { reviewId, replyContent, userId });
+    const [result] = await insert(sql);
+
+    if (result.affectedRows > 0) {
+      const [rows, fields] = await select(bindSQL("card/replies/id", { id: reviewId }));
+      res.render("components/reply-modal", { data: rows, reviewId });
+    }
+  });
+
   app.put("/like", async (req, res) => {
     if (!req.session.is_logined) res.send();
     const userId = req.session.userId || "";
