@@ -234,9 +234,10 @@ const start = async () => {
 
   app.get("/card/replies/:id", async (req, res) => {
     const { id } = req.params;
+    const userId = req.session.userId || "";
     const sql = bindSQL("card/replies/id", { id });
     const [rows, fields] = await select(sql);
-    res.render("components/reply-modal", { data: rows, reviewId: id, animation: true });
+    res.render("components/reply-modal", { data: rows, reviewId: id, animation: true, userId });
   });
 
   app.post("/add/reply", async (req, res, next) => {
@@ -248,7 +249,19 @@ const start = async () => {
 
     if (result.affectedRows > 0) {
       const [rows, fields] = await select(bindSQL("card/replies/id", { id: reviewId }));
-      res.render("components/reply-modal", { data: rows, reviewId });
+      res.render("components/reply-modal", { data: rows, reviewId, userId });
+    }
+  });
+
+  app.delete("/delete/reply/:reviewId/:replyId", async (req, res) => {
+    const userId = req.session.userId;
+    const { reviewId, replyId } = req.params;
+    const sql = bindSQL("remove/reply", { replyId });
+    const [result] = await remove(sql);
+
+    if (result.affectedRows > 0) {
+      const [rows, fields] = await select(bindSQL("card/replies/id", { id: reviewId }));
+      res.render("components/reply-modal", { data: rows, reviewId, userId });
     }
   });
 

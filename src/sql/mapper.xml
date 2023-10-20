@@ -84,6 +84,7 @@
     SELECT USER_ID as userId
           ,REPLY_CONTENT as replyContent
           ,REVIEW_ID as reviewId
+          ,REPLY_ID as replyId
       FROM TB_REPLY_MASTER
      WHERE REVIEW_ID = #{id}
      ORDER BY DATA_INS_DATE DESC
@@ -93,6 +94,11 @@
     INSERT INTO TB_REPLY_MASTER(REVIEW_ID,USER_ID,REPLY_CONTENT)
     VALUES (#{reviewId},#{userId},#{replyContent})
   </insert>
+
+  <delete id="remove/reply">
+    DELETE FROM TB_REPLY_MASTER
+     WHERE REPLY_ID = #{replyId}
+  </delete>
 
   <insert id="like">
     INSERT INTO TB_USER_REVIEW_TAG(REVIEW_ID,USER_ID,TAG_ID)
