@@ -1,15 +1,16 @@
 each data in datas
-  .card-container(hx-get="/card/"+data.cardId hx-trigger="intersect" hx-swap="outerHTML")
-    .card-header
+  .gigi-card-container(hx-get="/card/"+data.cardId hx-trigger="intersect" hx-swap="outerHTML")
+    .gigi-card-header
       .card-profile 
         img(src='/assets/icon/pig-profile.png', style='width:60px')
         p userName
       .card-store
         p storeName
+    .image-skeleton
     .tag-layout#main-tag-layout
       .card-tag(id=`_tag_`)
         p #tags
     .card-review 
       p review
     .card-reply 
-      p 댓글 15개
+      p 댓글
