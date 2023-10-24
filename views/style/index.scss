@@ -44,7 +44,7 @@ body {
 /* 화면 상단 영역 */
 #main-top {
   width: 90%;
-  height: 15vw;
+  height: 150px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -53,7 +53,7 @@ body {
 
 /* 화면 상단 인삿말 영역 */
 #main-hello {
-  font-family: 'Noto Looped Thai';
+  font-family: "Noto Looped Thai";
   font-style: normal;
   font-weight: 400;
   font-size: 2rem;
@@ -66,7 +66,7 @@ body {
 
 /* 가게 추가 버튼 */
 #main-top-add {
-  font-family: 'Noto Looped Thai';
+  font-family: "Noto Looped Thai";
   font-style: normal;
   font-weight: 400;
   font-size: 1.65rem;
