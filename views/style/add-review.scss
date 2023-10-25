@@ -1,6 +1,5 @@
 #add-review-layout {
   width: 95%;
-  height: 100%;
   border-radius: 25px 25px 0 0;
   background-color: white;
   display: flex;
@@ -8,12 +7,15 @@
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
+  overflow-y: scroll;
 }
 
 .add-picture {
   border: 3px dashed #dbdbdb;
   width: 850px;
   height: 850px;
+  min-width: 850px;
+  min-height: 850px;
   margin-top: 50px;
   margin-bottom: 30px;
   display: flex;
@@ -22,30 +24,47 @@
   flex-direction: row;
   flex-wrap: wrap;
   align-content: flex-start;
+  padding: 20px;
   .new-image {
     width: 260px;
     height: 260px;
-    margin: 10px;
-    overflow: hidden;
-    object-fit: cover;
+    border: dashed 1px gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 15px;
+    margin: 4px;
+    position: relative;
+    .delete-button {
+      width: 40px;
+      height: 40px;
+      background-color: transparent;
+      border: none;
+      position: absolute;
+      left: 210px;
+      bottom: 210px;
+    }
   }
   #img-upload {
     display: none;
   }
   /* 사진 등록 영역 */
   #add-picture-button {
+    width: 260px;
+    height: 260px;
+    border: dashed 1px gray;
     display: flex;
-    align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 15px;
   }
 }
 
 .add-picture img {
-  width: 1.85rem;
-  height: 1.85rem;
-  margin-right: 10px;
+  width: 100%;
+  height: 100%;
 }
 .add-picture p {
   font-family: "Noto Looped Thai";
@@ -70,6 +89,10 @@
   justify-content: space-between;
   margin-top: 30px;
   margin-bottom: 30px;
+  #add-tag-list {
+    width: 95%;
+    height: 120px;
+  }
 }
 
 /* input 태그 영역 */
@@ -80,6 +103,7 @@
   border-radius: 30px;
   font-size: 2rem;
   padding-left: 41px;
+  margin-bottom: 20px;
 }
 
 .form-input-text::placeholder {
@@ -97,6 +121,8 @@
   border-radius: 30px;
   padding-left: 41px;
   padding-top: 34px;
+  font-size: 2rem;
+  font-weight: 400;
   &::placeholder {
     font-family: "Noto Looped Thai";
     font-style: normal;
@@ -107,10 +133,9 @@
 }
 
 #input-tag-p {
-  width: 100%;
+  width: 95%;
   font-size: 28px;
   height: 28px;
-  margin-bottom: 2px;
   color: #df7f00;
   margin-left: 10px;
 }
@@ -118,6 +143,7 @@
 #add-tag-list {
   border-radius: 30px;
   border: 3px solid #e6e6e6;
+  margin-bottom: 20px;
 }
 
 /* 버튼 영역 */

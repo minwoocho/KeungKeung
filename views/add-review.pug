@@ -9,8 +9,8 @@ block body
   #add-review-layout(hx-get="/add/tagList" hx-trigger="load" hx-swap="innerHTML" hx-target=".tag-layout.card")
     form.add-picture#image-container(enctype = "multipart/form-data" name="imgs")
       input.img#img-upload(type="file" name="img" multiple accept="image/*" onChange="loadFile(this)")
-      span#add-picture-button(onclick="handleAddPictureButton()")  
-        img(src='assets/icon/add.png' style="width:2rem;height:2rem;margin-right:10px")
+      div#add-picture-button(onclick="handleAddPictureButton()")  
+        img(src='assets/icon/add.png' style="width:2rem;height:2rem;margin-bottom:10px")
         p 사진 추가하기
     form.review-form(hx-post="/add/review" hx-include="form.add-picture" hx-swap="none" 
     hx-on::after-request="alert('저장되었습니다.'); location.href = '/';" enctype = "multipart/form-data")
