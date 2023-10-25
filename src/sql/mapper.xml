@@ -22,12 +22,6 @@
       FROM TB_TAG_MASTER
   </select>
 
-  <!-- <select id="main/cards">
-    SELECT REVIEW_ID AS cardId
-    FROM TB_REVIEW_MASTER
-    ORDER BY REVIEW_ID DESC
-  </select> -->
-
   <select id="main/cards">
     SELECT DISTINCT REVIEW_ID AS cardId
     FROM TB_REVIEW_TAG

@@ -8,6 +8,8 @@ import mybatisMapprer, { Params } from "mybatis-mapper";
 import bodyParser from "body-parser";
 import multer from "multer";
 
+import mockUserData from "./src/mock/userData.json";
+
 declare module "express-session" {
   export interface SessionData {
     is_logined?: boolean;
@@ -158,9 +160,14 @@ const start = async () => {
   /**
    * 메인페이지
    */
+  const newUser = () => {};
+
   app.post("/login", async (req, res) => {
     // const { userId } = req.body;
     const userId = mockUserId;
+
+    // const userData = 슬랙.api에서.데이터를.가져온다?;
+    const userData = mockUserData;
 
     const sql = bindSQL("main/user", { userId });
     const [rows, fields] = await select(sql);
@@ -238,6 +245,14 @@ const start = async () => {
     const sql = bindSQL("card/replies/id", { id });
     const [rows, fields] = await select(sql);
     res.render("components/reply-modal", { data: rows, reviewId: id, animation: true, userId });
+  });
+
+  app.get("/card/replies/:id/count", async (req, res) => {
+    const { id } = req.params;
+    const userId = req.session.userId || "";
+    const sql = bindSQL("card/replies/id", { id });
+    const [rows, fields] = await select(sql);
+    res.send(`댓글 ${rows.length}개`);
   });
 
   app.post("/add/reply", async (req, res, next) => {

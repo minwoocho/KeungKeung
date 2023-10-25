@@ -21,7 +21,7 @@ mixin imglist (seq)
     .card-review 
         p #{data.review}
     .card-reply 
-        p(hx-get="/card/replies/"+data.reviewId hx-trigger="click" hx-target="#reply-modal-target") 댓글 #{data.replyCount}개
+        p(id=`reply-${data.reviewId}` hx-get="/card/replies/"+data.reviewId hx-trigger="click" hx-target="#reply-modal-target") 댓글 #{data.replyCount}개
     #reply-modal-target
     
 
