@@ -3,7 +3,8 @@
         .modal-content 
             .modal-header 
                 h1.modal-title 댓글
-                button.btn-close(onclick="handleCloseModal()" type="button")
+                button.btn-close(hx-get=`/card/replies/${reviewId}/count` hx-target=`#reply-${reviewId}` 
+                hx-on::after-request="handleCloseModal()" type="button")
             .modal-body
                 ol.list-group 
                     each reply in data 
